@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 abstract class AppTextStyles {
   // ───────────────────── Display ─────────────────────
@@ -242,5 +243,55 @@ abstract class AppTextStyles {
     height: 16 / 11,
     letterSpacing: 0.5,
     color: Colors.grey,
+  );
+
+  // ───────────────────── TicBoom reference (Home Menu) ─────────────────────
+  // Stili replicati dal design reference HTML.
+
+  /// Headline del riferimento: Rubik 800 (GIOCA, titoli).
+  static final TextStyle headline = GoogleFonts.rubik(
+    fontSize: 28,
+    fontWeight: FontWeight.w800,
+    height: 34 / 28,
+    letterSpacing: -0.28,
+  );
+
+  /// Titolo top bar: Rubik 700 (headline-md del riferimento).
+  static final TextStyle headlineMd = GoogleFonts.rubik(
+    fontSize: 22,
+    fontWeight: FontWeight.w700,
+    height: 28 / 22,
+  );
+
+  /// Titolo centrale top bar: Rubik 700 (title-card del riferimento).
+  static final TextStyle titleCard = GoogleFonts.rubik(
+    fontSize: 18,
+    fontWeight: FontWeight.w700,
+    height: 24 / 18,
+  );
+
+  /// Azioni secondarie: Plus Jakarta Sans 700 uppercase.
+  static final TextStyle labelAction = GoogleFonts.plusJakartaSans(
+    fontSize: 16,
+    fontWeight: FontWeight.w700,
+    height: 20 / 16,
+    letterSpacing: 0.64,
+  );
+
+  /// Pill e badge: Plus Jakarta Sans 600 uppercase, lettering largo.
+  static final TextStyle labelPill = GoogleFonts.plusJakartaSans(
+    fontSize: 12,
+    fontWeight: FontWeight.w600,
+    height: 16 / 12,
+    letterSpacing: 0.24,
+  );
+
+  /// Headline hero della splash: Rubik 800 (display-hero-mobile del
+  /// riferimento).
+  static final TextStyle displayHero = GoogleFonts.rubik(
+    fontSize: 36,
+    fontWeight: FontWeight.w800,
+    height: 42 / 36,
+    letterSpacing: -0.36,
   );
 }

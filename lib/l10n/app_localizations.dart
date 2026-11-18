@@ -103,6 +103,102 @@ abstract class AppLocalizations {
   /// In it, this message translates to:
   /// **'App'**
   String get appTitle;
+
+  /// No description provided for @homeMenuTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'HOME MENU'**
+  String get homeMenuTitle;
+
+  /// No description provided for @partyModeReady.
+  ///
+  /// In it, this message translates to:
+  /// **'PARTY MODE PRONTO'**
+  String get partyModeReady;
+
+  /// No description provided for @play.
+  ///
+  /// In it, this message translates to:
+  /// **'GIOCA'**
+  String get play;
+
+  /// No description provided for @howToPlay.
+  ///
+  /// In it, this message translates to:
+  /// **'COME SI GIOCA'**
+  String get howToPlay;
+
+  /// No description provided for @settings.
+  ///
+  /// In it, this message translates to:
+  /// **'IMPOSTAZIONI'**
+  String get settings;
+
+  /// No description provided for @multiplayerBadge.
+  ///
+  /// In it, this message translates to:
+  /// **'MULTIPLAYER LOCALE • 2-20 GIOCATORI'**
+  String get multiplayerBadge;
+
+  /// No description provided for @navParty.
+  ///
+  /// In it, this message translates to:
+  /// **'PARTY'**
+  String get navParty;
+
+  /// No description provided for @navSetup.
+  ///
+  /// In it, this message translates to:
+  /// **'SETUP'**
+  String get navSetup;
+
+  /// No description provided for @navRules.
+  ///
+  /// In it, this message translates to:
+  /// **'RULES'**
+  String get navRules;
+
+  /// No description provided for @navSettings.
+  ///
+  /// In it, this message translates to:
+  /// **'SETTINGS'**
+  String get navSettings;
+
+  /// No description provided for @partyGameEsplosivo.
+  ///
+  /// In it, this message translates to:
+  /// **'PARTY GAME ESPLOSIVO'**
+  String get partyGameEsplosivo;
+
+  /// No description provided for @splashHeadline.
+  ///
+  /// In it, this message translates to:
+  /// **'Passala prima'**
+  String get splashHeadline;
+
+  /// No description provided for @splashHeadlineAccent.
+  ///
+  /// In it, this message translates to:
+  /// **'che esploda!'**
+  String get splashHeadlineAccent;
+
+  /// No description provided for @splashSubtitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Il frenetico gioco da tavolo pass-and-play per fare scintille con gli amici.'**
+  String get splashSubtitle;
+
+  /// No description provided for @explosionAlertLevel.
+  ///
+  /// In it, this message translates to:
+  /// **'ALLERTA ESPLOSIONE LIVELLO 10'**
+  String get explosionAlertLevel;
+
+  /// No description provided for @loadingFuse.
+  ///
+  /// In it, this message translates to:
+  /// **'Caricamento miccia'**
+  String get loadingFuse;
 }
 
 class _AppLocalizationsDelegate

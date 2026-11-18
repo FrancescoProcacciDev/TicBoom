@@ -1,4 +1,20 @@
 {
   "@@locale": "en",
-  "appTitle": "App"
+  "appTitle": "App",
+  "homeMenuTitle": "HOME MENU",
+  "partyModeReady": "PARTY MODE READY",
+  "play": "PLAY",
+  "howToPlay": "HOW TO PLAY",
+  "settings": "SETTINGS",
+  "multiplayerBadge": "LOCAL MULTIPLAYER • 2-20 PLAYERS",
+  "navParty": "PARTY",
+  "navSetup": "SETUP",
+  "navRules": "RULES",
+  "navSettings": "SETTINGS",
+  "partyGameEsplosivo": "EXPLOSIVE PARTY GAME",
+  "splashHeadline": "Pass it before",
+  "splashHeadlineAccent": "it explodes!",
+  "splashSubtitle": "The frantic pass-and-play party board game to make sparks fly with your friends.",
+  "explosionAlertLevel": "EXPLOSION ALERT LEVEL 10",
+  "loadingFuse": "Loading fuse"
 }

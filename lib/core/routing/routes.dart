@@ -9,16 +9,29 @@ import 'package:ticboom/features/onboarding/view/bindings/onboarding_bindings.da
 import 'package:ticboom/features/onboarding/view/pages/onboarding_page.dart';
 import 'package:ticboom/features/profile/view/bindings/profile_bindings.dart';
 import 'package:ticboom/features/profile/view/pages/profile_page.dart';
+import 'package:ticboom/features/rules/view/pages/rules_page.dart';
+import 'package:ticboom/features/settings/view/pages/settings_page.dart';
+import 'package:ticboom/features/setup/view/pages/setup_page.dart';
+import 'package:ticboom/features/splash/view/bindings/splash_bindings.dart';
+import 'package:ticboom/features/splash/view/pages/splash_page.dart';
 
 final rootNavigatorKey = GlobalKey<NavigatorState>();
 
 GoRouter buildRootRouter() {
   return GoRouter(
     navigatorKey: rootNavigatorKey,
-    initialLocation: AppRoute.onboarding.path,
+    initialLocation: AppRoute.splash.path,
     observers: [GoRouterObserver()],
     redirect: redirectOnboardingGuard,
     routes: [
+      GoRoute(
+        path: AppRoute.splash.path,
+        name: AppRoute.splash.name,
+        pageBuilder: (context, state) {
+          const SplashBindings().dependencies();
+          return const MaterialPage(child: SplashPage());
+        },
+      ),
       GoRoute(
         path: AppRoute.onboarding.path,
         name: AppRoute.onboarding.name,
@@ -41,6 +54,27 @@ GoRouter buildRootRouter() {
         pageBuilder: (context, state) {
           const ProfileBindings().dependencies();
           return const MaterialPage(child: ProfilePage());
+        },
+      ),
+      GoRoute(
+        path: AppRoute.gameConfig.path,
+        name: AppRoute.gameConfig.name,
+        pageBuilder: (context, state) {
+          return const MaterialPage(child: SetupPage());
+        },
+      ),
+      GoRoute(
+        path: AppRoute.howToPlayRules.path,
+        name: AppRoute.howToPlayRules.name,
+        pageBuilder: (context, state) {
+          return const MaterialPage(child: RulesPage());
+        },
+      ),
+      GoRoute(
+        path: AppRoute.gameSettings.path,
+        name: AppRoute.gameSettings.name,
+        pageBuilder: (context, state) {
+          return const MaterialPage(child: SettingsPage());
         },
       ),
     ],

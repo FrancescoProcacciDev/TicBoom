@@ -10,16 +10,26 @@ import 'package:ticboom/features/onboarding/view/bindings/onboarding_bindings.da
 import 'package:ticboom/features/onboarding/view/pages/onboarding_page.dart';
 import 'package:ticboom/features/profile/view/bindings/profile_bindings.dart';
 import 'package:ticboom/features/profile/view/pages/profile_page.dart';
+import 'package:ticboom/features/splash/view/bindings/splash_bindings.dart';
+import 'package:ticboom/features/splash/view/pages/splash_page.dart';
 
 final rootNavigatorKey = GlobalKey<NavigatorState>();
 
 GoRouter buildShellRouter() {
   return GoRouter(
     navigatorKey: rootNavigatorKey,
-    initialLocation: AppRoute.onboarding.path,
+    initialLocation: AppRoute.splash.path,
     observers: [GoRouterObserver()],
     redirect: redirectOnboardingGuard,
     routes: [
+      GoRoute(
+        path: AppRoute.splash.path,
+        name: AppRoute.splash.name,
+        pageBuilder: (context, state) {
+          const SplashBindings().dependencies();
+          return const MaterialPage(child: SplashPage());
+        },
+      ),
       GoRoute(
         path: AppRoute.onboarding.path,
         name: AppRoute.onboarding.name,
