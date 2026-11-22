@@ -109,4 +109,142 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get navConfig => 'Config';
+
+  @override
+  String get setupEyebrow => 'CONFIGURAZIONE SALA';
+
+  @override
+  String get setupTitle => 'PREPARA LA PARTITA';
+
+  @override
+  String get setupSubtitle =>
+      'Seleziona giocatori e categorie per armare il detonatore.';
+
+  @override
+  String get giocatoriAlTavolo => 'Giocatori al tavolo';
+
+  @override
+  String get partecipanti => 'PARTECIPANTI';
+
+  @override
+  String get rangeAmmissibile => 'Range ammissibile: 2 - 20';
+
+  @override
+  String get riduciGiocatori => 'Riduci giocatori';
+
+  @override
+  String get aumentaGiocatori => 'Aumenta giocatori';
+
+  @override
+  String get scegliLeCategorie => 'Scegli le categorie';
+
+  @override
+  String domandeDisponibili(int count) {
+    return '$count domande';
+  }
+
+  @override
+  String get selezionaTutte => 'Seleziona tutte';
+
+  @override
+  String get deselezionaTutte => 'Deseleziona tutte';
+
+  @override
+  String get categoriaAnimali => 'Animali';
+
+  @override
+  String get categoriaCiboBevande => 'Cibo e bevande';
+
+  @override
+  String get categoriaCalcio => 'Calcio';
+
+  @override
+  String get categoriaAnime => 'Anime';
+
+  @override
+  String get categoriaPersonalizzata => '+ Categoria personalizzata';
+
+  @override
+  String get categoriaPersonalizzataDesc =>
+      'Aggiungi i tuoi lemmi o regole del gruppo';
+
+  @override
+  String get detonatoreCasuale => 'Detonatore casuale';
+
+  @override
+  String get detonatoreDescrizione =>
+      'L\'algoritmo calcola una durata segreta ad ogni turno.';
+
+  @override
+  String get iniziaPartita => 'INIZIA PARTITA';
+
+  @override
+  String get attive => 'attive';
+
+  @override
+  String get partitaInCorsoTitle => 'DETONAZIONE IN CORSO';
+
+  @override
+  String get rispondiEPassa =>
+      'Rispondi a voce alta e passa subito lo smartphone!';
+
+  @override
+  String get bombaInMano => 'Bomba in mano';
+
+  @override
+  String get toccaAChiHaIlTelefono => 'Tocca a chi ha il telefono';
+
+  @override
+  String get inGioco => 'IN GIOCO';
+
+  @override
+  String get passaIlTelefono => 'PASSA IL TELEFONO';
+
+  @override
+  String get nessunaRipetizione => 'Nessuna ripetizione ammessa';
+
+  @override
+  String get ticLabel => 'TIC...';
+
+  @override
+  String get tacLabel => 'TAC!';
+
+  @override
+  String get abbandonoTitolo => 'Abbandonare la partita?';
+
+  @override
+  String get abbandonoTesto =>
+      'Se esci, il timer si interrompe e la sessione termina.';
+
+  @override
+  String get abbandonoConferma => 'Abbandona';
+
+  @override
+  String get abbandonoAnnulla => 'Continua a giocare';
+
+  @override
+  String get detonazioneConfermata => 'DETONAZIONE CONFERMATA';
+
+  @override
+  String get bombaEsplosaMessaggio => 'La bomba è esplosa tra le tue mani!';
+
+  @override
+  String get sconfittaDelRound => 'Sconfitta del round';
+
+  @override
+  String get haiIlTelefonoInMano => 'Hai il telefono in mano!';
+
+  @override
+  String get tempoLabel => 'Tempo';
+
+  @override
+  String secondiResistiti(int count) {
+    return '${count}s resistiti';
+  }
+
+  @override
+  String get giocaNuovaPartita => 'GIOCA NUOVA PARTITA';
+
+  @override
+  String get rigiochiManche => 'Rigiochi subito la manche';
 }

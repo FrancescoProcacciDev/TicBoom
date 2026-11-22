@@ -28,8 +28,8 @@ class HomeController extends GetxController {
     await preferences.setBool(AppKeyStore.soundFxMuted, isMuted.value);
   }
 
-  /// CTA principale: naviga alla feature party rooms.
-  void goPlay() => Get.find<GoRouter>().go(AppRoute.partyRooms.path);
+  /// CTA principale: naviga alla configurazione della partita.
+  void goPlay() => Get.find<GoRouter>().go(AppRoute.gameConfig.path);
 
   /// Card secondaria "Setup": naviga alle impostazioni app.
   void goSettings() => Get.find<GoRouter>().go(AppRoute.gameSettings.path);

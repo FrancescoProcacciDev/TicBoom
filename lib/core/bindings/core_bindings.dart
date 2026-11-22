@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:ticboom/core/config/app_config.dart';
+import 'package:ticboom/core/game/game_service.dart';
 import 'package:ticboom/core/routing/routes.dart' as root_routes;
 import 'package:ticboom/core/routing/shell_routes.dart' as shell_routes;
 import 'package:ticboom/core/view/controllers/theme_controller.dart';
@@ -31,6 +32,7 @@ class CoreBindings implements Bindings {
     Get.put<AppConfig>(config, permanent: true);
     Get.put<SharedPreferences>(preferences, permanent: true);
     Get.put<Dio>(provideDio(appConfig: config), permanent: true);
+    Get.put<GameService>(GameService(), permanent: true);
     Get.put<ThemeRepository>(
       ThemeRepositorySharedPrefsImpl(preferences),
       permanent: true,

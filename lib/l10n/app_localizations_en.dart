@@ -109,4 +109,141 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get navConfig => 'Config';
+
+  @override
+  String get setupEyebrow => 'ROOM SETUP';
+
+  @override
+  String get setupTitle => 'PREPARE THE MATCH';
+
+  @override
+  String get setupSubtitle =>
+      'Select players and categories to arm the detonator.';
+
+  @override
+  String get giocatoriAlTavolo => 'Players at the table';
+
+  @override
+  String get partecipanti => 'PLAYERS';
+
+  @override
+  String get rangeAmmissibile => 'Admissible range: 2 - 20';
+
+  @override
+  String get riduciGiocatori => 'Decrease players';
+
+  @override
+  String get aumentaGiocatori => 'Increase players';
+
+  @override
+  String get scegliLeCategorie => 'Pick the categories';
+
+  @override
+  String domandeDisponibili(int count) {
+    return '$count questions';
+  }
+
+  @override
+  String get selezionaTutte => 'Select all';
+
+  @override
+  String get deselezionaTutte => 'Deselect all';
+
+  @override
+  String get categoriaAnimali => 'Animals';
+
+  @override
+  String get categoriaCiboBevande => 'Food & drinks';
+
+  @override
+  String get categoriaCalcio => 'Football';
+
+  @override
+  String get categoriaAnime => 'Anime';
+
+  @override
+  String get categoriaPersonalizzata => '+ Custom category';
+
+  @override
+  String get categoriaPersonalizzataDesc => 'Add your own terms or house rules';
+
+  @override
+  String get detonatoreCasuale => 'Random detonator';
+
+  @override
+  String get detonatoreDescrizione =>
+      'The algorithm computes a secret duration every round.';
+
+  @override
+  String get iniziaPartita => 'START MATCH';
+
+  @override
+  String get attive => 'active';
+
+  @override
+  String get partitaInCorsoTitle => 'DETONATION IN PROGRESS';
+
+  @override
+  String get rispondiEPassa =>
+      'Answer out loud and pass the smartphone right away!';
+
+  @override
+  String get bombaInMano => 'Bomb in hand';
+
+  @override
+  String get toccaAChiHaIlTelefono => 'Whoever holds the phone';
+
+  @override
+  String get inGioco => 'IN PLAY';
+
+  @override
+  String get passaIlTelefono => 'PASS THE PHONE';
+
+  @override
+  String get nessunaRipetizione => 'No repeats allowed';
+
+  @override
+  String get ticLabel => 'TIC...';
+
+  @override
+  String get tacLabel => 'TAC!';
+
+  @override
+  String get abbandonoTitolo => 'Leave the match?';
+
+  @override
+  String get abbandonoTesto =>
+      'If you leave, the timer stops and the session ends.';
+
+  @override
+  String get abbandonoConferma => 'Leave';
+
+  @override
+  String get abbandonoAnnulla => 'Keep playing';
+
+  @override
+  String get detonazioneConfermata => 'DETONATION CONFIRMED';
+
+  @override
+  String get bombaEsplosaMessaggio => 'The bomb exploded in your hands!';
+
+  @override
+  String get sconfittaDelRound => 'Round lost';
+
+  @override
+  String get haiIlTelefonoInMano => 'You were holding the phone!';
+
+  @override
+  String get tempoLabel => 'Time';
+
+  @override
+  String secondiResistiti(int count) {
+    return '${count}s survived';
+  }
+
+  @override
+  String get giocaNuovaPartita => 'NEW MATCH';
+
+  @override
+  String get rigiochiManche => 'Replay the round now';
 }

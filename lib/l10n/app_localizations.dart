@@ -289,6 +289,264 @@ abstract class AppLocalizations {
   /// In it, this message translates to:
   /// **'Config'**
   String get navConfig;
+
+  /// No description provided for @setupEyebrow.
+  ///
+  /// In it, this message translates to:
+  /// **'CONFIGURAZIONE SALA'**
+  String get setupEyebrow;
+
+  /// No description provided for @setupTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'PREPARA LA PARTITA'**
+  String get setupTitle;
+
+  /// No description provided for @setupSubtitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Seleziona giocatori e categorie per armare il detonatore.'**
+  String get setupSubtitle;
+
+  /// No description provided for @giocatoriAlTavolo.
+  ///
+  /// In it, this message translates to:
+  /// **'Giocatori al tavolo'**
+  String get giocatoriAlTavolo;
+
+  /// No description provided for @partecipanti.
+  ///
+  /// In it, this message translates to:
+  /// **'PARTECIPANTI'**
+  String get partecipanti;
+
+  /// No description provided for @rangeAmmissibile.
+  ///
+  /// In it, this message translates to:
+  /// **'Range ammissibile: 2 - 20'**
+  String get rangeAmmissibile;
+
+  /// No description provided for @riduciGiocatori.
+  ///
+  /// In it, this message translates to:
+  /// **'Riduci giocatori'**
+  String get riduciGiocatori;
+
+  /// No description provided for @aumentaGiocatori.
+  ///
+  /// In it, this message translates to:
+  /// **'Aumenta giocatori'**
+  String get aumentaGiocatori;
+
+  /// No description provided for @scegliLeCategorie.
+  ///
+  /// In it, this message translates to:
+  /// **'Scegli le categorie'**
+  String get scegliLeCategorie;
+
+  /// No description provided for @domandeDisponibili.
+  ///
+  /// In it, this message translates to:
+  /// **'{count} domande'**
+  String domandeDisponibili(int count);
+
+  /// No description provided for @selezionaTutte.
+  ///
+  /// In it, this message translates to:
+  /// **'Seleziona tutte'**
+  String get selezionaTutte;
+
+  /// No description provided for @deselezionaTutte.
+  ///
+  /// In it, this message translates to:
+  /// **'Deseleziona tutte'**
+  String get deselezionaTutte;
+
+  /// No description provided for @categoriaAnimali.
+  ///
+  /// In it, this message translates to:
+  /// **'Animali'**
+  String get categoriaAnimali;
+
+  /// No description provided for @categoriaCiboBevande.
+  ///
+  /// In it, this message translates to:
+  /// **'Cibo e bevande'**
+  String get categoriaCiboBevande;
+
+  /// No description provided for @categoriaCalcio.
+  ///
+  /// In it, this message translates to:
+  /// **'Calcio'**
+  String get categoriaCalcio;
+
+  /// No description provided for @categoriaAnime.
+  ///
+  /// In it, this message translates to:
+  /// **'Anime'**
+  String get categoriaAnime;
+
+  /// No description provided for @categoriaPersonalizzata.
+  ///
+  /// In it, this message translates to:
+  /// **'+ Categoria personalizzata'**
+  String get categoriaPersonalizzata;
+
+  /// No description provided for @categoriaPersonalizzataDesc.
+  ///
+  /// In it, this message translates to:
+  /// **'Aggiungi i tuoi lemmi o regole del gruppo'**
+  String get categoriaPersonalizzataDesc;
+
+  /// No description provided for @detonatoreCasuale.
+  ///
+  /// In it, this message translates to:
+  /// **'Detonatore casuale'**
+  String get detonatoreCasuale;
+
+  /// No description provided for @detonatoreDescrizione.
+  ///
+  /// In it, this message translates to:
+  /// **'L\'algoritmo calcola una durata segreta ad ogni turno.'**
+  String get detonatoreDescrizione;
+
+  /// No description provided for @iniziaPartita.
+  ///
+  /// In it, this message translates to:
+  /// **'INIZIA PARTITA'**
+  String get iniziaPartita;
+
+  /// No description provided for @attive.
+  ///
+  /// In it, this message translates to:
+  /// **'attive'**
+  String get attive;
+
+  /// No description provided for @partitaInCorsoTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'DETONAZIONE IN CORSO'**
+  String get partitaInCorsoTitle;
+
+  /// No description provided for @rispondiEPassa.
+  ///
+  /// In it, this message translates to:
+  /// **'Rispondi a voce alta e passa subito lo smartphone!'**
+  String get rispondiEPassa;
+
+  /// No description provided for @bombaInMano.
+  ///
+  /// In it, this message translates to:
+  /// **'Bomba in mano'**
+  String get bombaInMano;
+
+  /// No description provided for @toccaAChiHaIlTelefono.
+  ///
+  /// In it, this message translates to:
+  /// **'Tocca a chi ha il telefono'**
+  String get toccaAChiHaIlTelefono;
+
+  /// No description provided for @inGioco.
+  ///
+  /// In it, this message translates to:
+  /// **'IN GIOCO'**
+  String get inGioco;
+
+  /// No description provided for @passaIlTelefono.
+  ///
+  /// In it, this message translates to:
+  /// **'PASSA IL TELEFONO'**
+  String get passaIlTelefono;
+
+  /// No description provided for @nessunaRipetizione.
+  ///
+  /// In it, this message translates to:
+  /// **'Nessuna ripetizione ammessa'**
+  String get nessunaRipetizione;
+
+  /// No description provided for @ticLabel.
+  ///
+  /// In it, this message translates to:
+  /// **'TIC...'**
+  String get ticLabel;
+
+  /// No description provided for @tacLabel.
+  ///
+  /// In it, this message translates to:
+  /// **'TAC!'**
+  String get tacLabel;
+
+  /// No description provided for @abbandonoTitolo.
+  ///
+  /// In it, this message translates to:
+  /// **'Abbandonare la partita?'**
+  String get abbandonoTitolo;
+
+  /// No description provided for @abbandonoTesto.
+  ///
+  /// In it, this message translates to:
+  /// **'Se esci, il timer si interrompe e la sessione termina.'**
+  String get abbandonoTesto;
+
+  /// No description provided for @abbandonoConferma.
+  ///
+  /// In it, this message translates to:
+  /// **'Abbandona'**
+  String get abbandonoConferma;
+
+  /// No description provided for @abbandonoAnnulla.
+  ///
+  /// In it, this message translates to:
+  /// **'Continua a giocare'**
+  String get abbandonoAnnulla;
+
+  /// No description provided for @detonazioneConfermata.
+  ///
+  /// In it, this message translates to:
+  /// **'DETONAZIONE CONFERMATA'**
+  String get detonazioneConfermata;
+
+  /// No description provided for @bombaEsplosaMessaggio.
+  ///
+  /// In it, this message translates to:
+  /// **'La bomba è esplosa tra le tue mani!'**
+  String get bombaEsplosaMessaggio;
+
+  /// No description provided for @sconfittaDelRound.
+  ///
+  /// In it, this message translates to:
+  /// **'Sconfitta del round'**
+  String get sconfittaDelRound;
+
+  /// No description provided for @haiIlTelefonoInMano.
+  ///
+  /// In it, this message translates to:
+  /// **'Hai il telefono in mano!'**
+  String get haiIlTelefonoInMano;
+
+  /// No description provided for @tempoLabel.
+  ///
+  /// In it, this message translates to:
+  /// **'Tempo'**
+  String get tempoLabel;
+
+  /// No description provided for @secondiResistiti.
+  ///
+  /// In it, this message translates to:
+  /// **'{count}s resistiti'**
+  String secondiResistiti(int count);
+
+  /// No description provided for @giocaNuovaPartita.
+  ///
+  /// In it, this message translates to:
+  /// **'GIOCA NUOVA PARTITA'**
+  String get giocaNuovaPartita;
+
+  /// No description provided for @rigiochiManche.
+  ///
+  /// In it, this message translates to:
+  /// **'Rigiochi subito la manche'**
+  String get rigiochiManche;
 }
 
 class _AppLocalizationsDelegate

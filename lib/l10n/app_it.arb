@@ -31,5 +31,58 @@
   "navLobby": "Lobby",
   "navRooms": "Rooms",
   "navVault": "Vault",
-  "navConfig": "Config"
+  "navConfig": "Config",
+  "setupEyebrow": "CONFIGURAZIONE SALA",
+  "setupTitle": "PREPARA LA PARTITA",
+  "setupSubtitle": "Seleziona giocatori e categorie per armare il detonatore.",
+  "giocatoriAlTavolo": "Giocatori al tavolo",
+  "partecipanti": "PARTECIPANTI",
+  "rangeAmmissibile": "Range ammissibile: 2 - 20",
+  "riduciGiocatori": "Riduci giocatori",
+  "aumentaGiocatori": "Aumenta giocatori",
+  "scegliLeCategorie": "Scegli le categorie",
+  "domandeDisponibili": "{count} domande",
+  "@domandeDisponibili": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "selezionaTutte": "Seleziona tutte",
+  "deselezionaTutte": "Deseleziona tutte",
+  "categoriaAnimali": "Animali",
+  "categoriaCiboBevande": "Cibo e bevande",
+  "categoriaCalcio": "Calcio",
+  "categoriaAnime": "Anime",
+  "categoriaPersonalizzata": "+ Categoria personalizzata",
+  "categoriaPersonalizzataDesc": "Aggiungi i tuoi lemmi o regole del gruppo",
+  "detonatoreCasuale": "Detonatore casuale",
+  "detonatoreDescrizione": "L'algoritmo calcola una durata segreta ad ogni turno.",
+  "iniziaPartita": "INIZIA PARTITA",
+  "attive": "attive",
+  "partitaInCorsoTitle": "DETONAZIONE IN CORSO",
+  "rispondiEPassa": "Rispondi a voce alta e passa subito lo smartphone!",
+  "bombaInMano": "Bomba in mano",
+  "toccaAChiHaIlTelefono": "Tocca a chi ha il telefono",
+  "inGioco": "IN GIOCO",
+  "passaIlTelefono": "PASSA IL TELEFONO",
+  "nessunaRipetizione": "Nessuna ripetizione ammessa",
+  "ticLabel": "TIC...",
+  "tacLabel": "TAC!",
+  "abbandonoTitolo": "Abbandonare la partita?",
+  "abbandonoTesto": "Se esci, il timer si interrompe e la sessione termina.",
+  "abbandonoConferma": "Abbandona",
+  "abbandonoAnnulla": "Continua a giocare",
+  "detonazioneConfermata": "DETONAZIONE CONFERMATA",
+  "bombaEsplosaMessaggio": "La bomba è esplosa tra le tue mani!",
+  "sconfittaDelRound": "Sconfitta del round",
+  "haiIlTelefonoInMano": "Hai il telefono in mano!",
+  "tempoLabel": "Tempo",
+  "secondiResistiti": "{count}s resistiti",
+  "@secondiResistiti": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "giocaNuovaPartita": "GIOCA NUOVA PARTITA",
+  "rigiochiManche": "Rigiochi subito la manche"
 }

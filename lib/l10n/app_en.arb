@@ -31,5 +31,58 @@
   "navLobby": "Lobby",
   "navRooms": "Rooms",
   "navVault": "Vault",
-  "navConfig": "Config"
+  "navConfig": "Config",
+  "setupEyebrow": "ROOM SETUP",
+  "setupTitle": "PREPARE THE MATCH",
+  "setupSubtitle": "Select players and categories to arm the detonator.",
+  "giocatoriAlTavolo": "Players at the table",
+  "partecipanti": "PLAYERS",
+  "rangeAmmissibile": "Admissible range: 2 - 20",
+  "riduciGiocatori": "Decrease players",
+  "aumentaGiocatori": "Increase players",
+  "scegliLeCategorie": "Pick the categories",
+  "domandeDisponibili": "{count} questions",
+  "@domandeDisponibili": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "selezionaTutte": "Select all",
+  "deselezionaTutte": "Deselect all",
+  "categoriaAnimali": "Animals",
+  "categoriaCiboBevande": "Food & drinks",
+  "categoriaCalcio": "Football",
+  "categoriaAnime": "Anime",
+  "categoriaPersonalizzata": "+ Custom category",
+  "categoriaPersonalizzataDesc": "Add your own terms or house rules",
+  "detonatoreCasuale": "Random detonator",
+  "detonatoreDescrizione": "The algorithm computes a secret duration every round.",
+  "iniziaPartita": "START MATCH",
+  "attive": "active",
+  "partitaInCorsoTitle": "DETONATION IN PROGRESS",
+  "rispondiEPassa": "Answer out loud and pass the smartphone right away!",
+  "bombaInMano": "Bomb in hand",
+  "toccaAChiHaIlTelefono": "Whoever holds the phone",
+  "inGioco": "IN PLAY",
+  "passaIlTelefono": "PASS THE PHONE",
+  "nessunaRipetizione": "No repeats allowed",
+  "ticLabel": "TIC...",
+  "tacLabel": "TAC!",
+  "abbandonoTitolo": "Leave the match?",
+  "abbandonoTesto": "If you leave, the timer stops and the session ends.",
+  "abbandonoConferma": "Leave",
+  "abbandonoAnnulla": "Keep playing",
+  "detonazioneConfermata": "DETONATION CONFIRMED",
+  "bombaEsplosaMessaggio": "The bomb exploded in your hands!",
+  "sconfittaDelRound": "Round lost",
+  "haiIlTelefonoInMano": "You were holding the phone!",
+  "tempoLabel": "Time",
+  "secondiResistiti": "{count}s survived",
+  "@secondiResistiti": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "giocaNuovaPartita": "NEW MATCH",
+  "rigiochiManche": "Replay the round now"
 }

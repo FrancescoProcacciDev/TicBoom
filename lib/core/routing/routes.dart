@@ -3,6 +3,8 @@ import 'package:go_router/go_router.dart';
 import 'package:ticboom/core/routing/app_route.dart';
 import 'package:ticboom/core/routing/guards/onboarding_redirect.dart';
 import 'package:ticboom/core/routing/go_router_observer.dart';
+import 'package:ticboom/features/game/view/pages/game_over_page.dart';
+import 'package:ticboom/features/game/view/pages/game_play_page.dart';
 import 'package:ticboom/features/home/view/bindings/home_bindings.dart';
 import 'package:ticboom/features/home/view/pages/home_page.dart';
 import 'package:ticboom/features/onboarding/view/bindings/onboarding_bindings.dart';
@@ -14,6 +16,7 @@ import 'package:ticboom/features/rules/view/bindings/rules_bindings.dart';
 import 'package:ticboom/features/rules/view/pages/rules_page.dart';
 import 'package:ticboom/features/settings/view/pages/settings_page.dart';
 import 'package:ticboom/features/setup/view/pages/setup_page.dart';
+import 'package:ticboom/features/setup/view/bindings/setup_bindings.dart';
 import 'package:ticboom/features/splash/view/bindings/splash_bindings.dart';
 import 'package:ticboom/features/splash/view/pages/splash_page.dart';
 import 'package:ticboom/features/vault_records/view/pages/vault_records_page.dart';
@@ -63,7 +66,26 @@ GoRouter buildRootRouter() {
         path: AppRoute.gameConfig.path,
         name: AppRoute.gameConfig.name,
         pageBuilder: (context, state) {
+          const SetupBindings().dependencies();
           return const MaterialPage(child: SetupPage());
+        },
+      ),
+      GoRoute(
+        path: AppRoute.gamePlay.path,
+        name: AppRoute.gamePlay.name,
+        pageBuilder: (context, state) {
+          // Nessun binding: il GamePlayController è registrato e smaltito
+          // dal ciclo di vita della pagina stessa (initState/dispose).
+          return const MaterialPage(child: GamePlayPage());
+        },
+      ),
+      GoRoute(
+        path: AppRoute.gameOver.path,
+        name: AppRoute.gameOver.name,
+        pageBuilder: (context, state) {
+          // Nessun binding: il GameOverController è registrato e smaltito
+          // dal ciclo di vita della pagina stessa (initState/dispose).
+          return const MaterialPage(child: GameOverPage());
         },
       ),
       GoRoute(
