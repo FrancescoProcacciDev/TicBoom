@@ -1,18 +1,20 @@
-import 'dart:math' as math;
-import 'dart:ui';
+import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:ticboom/core/styles/app_colors.dart';
 import 'package:ticboom/core/styles/app_text_styles.dart';
 import 'package:ticboom/core/view/widgets/app_bottom_nav.dart';
+import 'package:ticboom/core/view/widgets/app_header.dart';
 import 'package:ticboom/features/home/view/controllers/home_controller.dart';
 import 'package:ticboom/l10n/app_localizations.dart';
 
-/// Schermata "Party / Home Menu" replicata dal design reference HTML.
-///
-/// StatelessWidget puro: il layout è statico, la reattività passa da Obx
-/// (stato del controller) e da piccoli widget animati privati.
+/// Schermata "Menu principale minimale" replicata dal nuovo design reference
+/// HTML: header fisso traslucido, pill pass-and-play, bombola vettoriale
+/// grande con scintilla intermittente, CTA dorata, card secondarie e card di
+/// stato. La logica (isMuted persistito, goProfile, ecc.) resta quella
+/// esistente del controller.
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
@@ -23,46 +25,48 @@ class HomePage extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: AppColors.surface,
+      // Nav ancorata al fondo dello schermo via Scaffold: il body termina
+      // sopra la barra e la safe area inferiore è gestita dalla barra stessa.
+      bottomNavigationBar: const AppBottomNav(),
       body: Stack(
         children: [
-          Column(
-            children: [
-              _HomeTopBar(controller: controller, l10n: l10n),
-              Expanded(
-                child: SingleChildScrollView(
-                  padding: const EdgeInsets.only(bottom: 110),
-                  child: Center(
-                    child: ConstrainedBox(
-                      constraints: const BoxConstraints(maxWidth: 480),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            const SizedBox(height: 16),
-                            _PartyPill(label: l10n.partyModeReady),
-                            const SizedBox(height: 8),
-                            const _HeroLogo(),
-                            _MascotStage(controller: controller),
-                            const SizedBox(height: 24),
-                            _MenuButtons(controller: controller, l10n: l10n),
-                            const SizedBox(height: 24),
-                            _MultiplayerBadge(label: l10n.multiplayerBadge),
-                            const SizedBox(height: 16),
-                          ],
-                        ),
-                      ),
+          // Il viewport scrollabile riempie SEMPRE l'intero body (viewport
+          // meno nav, altezza già imposta dallo Scaffold): Positioned.fill
+          // impone vincoli tight, senza dipendere dallo shrink-wrap del
+          // figlio non-posizionato dello Stack.
+          Positioned.fill(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.only(top: 16 + 64, bottom: 24),
+              child: Center(
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 448),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Column(
+                      children: [
+                        _PassAndPlayPill(label: l10n.passAndPlayPill),
+                        const SizedBox(height: 8),
+                        const _BombHero(),
+                        const SizedBox(height: 12),
+                        _TitleGroup(l10n: l10n),
+                        const SizedBox(height: 24),
+                        _ActionZone(controller: controller, l10n: l10n),
+                      ],
                     ),
                   ),
                 ),
               ),
-            ],
+            ),
           ),
-          const Positioned(
+          // Header fisso condiviso.
+          Positioned(
             left: 0,
             right: 0,
-            bottom: 0,
-            child: AppBottomNav(),
+            top: 0,
+            child: AppHeader(
+              isMuted: controller.isMuted,
+              onToggleSoundFx: controller.toggleSoundFx,
+            ),
           ),
         ],
       ),
@@ -71,319 +75,450 @@ class HomePage extends StatelessWidget {
 }
 
 // ---------------------------------------------------------------------------
-// Top bar
+// Pill "Pass-and-play da tavolo"
 // ---------------------------------------------------------------------------
 
-class _HomeTopBar extends StatelessWidget {
-  const _HomeTopBar({required this.controller, required this.l10n});
+class _PassAndPlayPill extends StatelessWidget {
+  const _PassAndPlayPill({required this.label});
 
-  final HomeController controller;
-  final AppLocalizations l10n;
+  final String label;
 
   @override
   Widget build(BuildContext context) {
-    return ClipRect(
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
-        child: Container(
-          decoration: const BoxDecoration(
-            color: Color(0xCC101221), // surface @ 80%
-            boxShadow: [
-              BoxShadow(
-                color: Color(0x0A000000), // black @ 4%
-                offset: Offset(0, 1),
-                blurRadius: 8,
-              ),
-            ],
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+      decoration: BoxDecoration(
+        color: AppColors.surfaceContainerHigh,
+        borderRadius: BorderRadius.circular(999),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.shadow.withValues(alpha: 0.15),
+            offset: const Offset(0, 1),
+            blurRadius: 2,
           ),
-          child: SafeArea(
-            top: true,
-            bottom: false,
-            child: SizedBox(
-              height: 64,
+        ],
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const _PulseDot(size: 6, color: AppColors.primaryContainer),
+          const SizedBox(width: 8),
+          Text(
+            label.toUpperCase(),
+            style: AppTextStyles.labelMono.copyWith(
+              fontSize: 10,
+              color: AppColors.onSurfaceVariant,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Hero: bombola grande + glow + badge READY
+// ---------------------------------------------------------------------------
+
+class _BombHero extends StatelessWidget {
+  const _BombHero();
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 256,
+      height: 268,
+      child: Stack(
+        clipBehavior: Clip.none,
+        alignment: Alignment.center,
+        children: [
+          // Glow ambientale dietro la bombola.
+          Positioned(
+            top: 0,
+            child: Container(
+              width: 256,
+              height: 256,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                gradient: RadialGradient(
+                  colors: [
+                    AppColors.primaryContainer.withValues(alpha: 0.10),
+                    AppColors.primaryContainer.withValues(alpha: 0.0),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          Positioned(top: 8, child: const _BigBombVector()),
+          // Badge READY overlay.
+          Positioned(
+            bottom: 8,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+              decoration: BoxDecoration(
+                color: AppColors.surfaceContainerHigh.withValues(alpha: 0.9),
+                borderRadius: BorderRadius.circular(999),
+                border: Border.all(color: AppColors.surfaceContainerHighest),
+                boxShadow: [
+                  BoxShadow(
+                    color: AppColors.shadow.withValues(alpha: 0.2),
+                    offset: const Offset(0, 2),
+                    blurRadius: 6,
+                  ),
+                ],
+              ),
               child: Row(
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  Expanded(
-                    child: Row(
-                      children: [
-                        SizedBox(
-                          height: 32,
-                          child: Image.asset(
-                            'assets/images/logo.jpg',
-                            fit: BoxFit.contain,
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        Text(
-                          'TicBoom',
-                          style: AppTextStyles.headlineMd.copyWith(
-                            color: AppColors.primaryContainer,
-                          ),
-                        ),
+                  Container(
+                    width: 8,
+                    height: 8,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: AppColors.primaryContainer,
+                      boxShadow: const [
+                        BoxShadow(color: Color(0xFFFBBF24), blurRadius: 8),
                       ],
                     ),
                   ),
-                  ConstrainedBox(
-                    constraints: const BoxConstraints(maxWidth: 130),
-                    child: Text(
-                      l10n.homeMenuTitle,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.center,
-                      style: AppTextStyles.titleCard.copyWith(
-                        color: AppColors.onSurface,
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        _SoundFxButton(controller: controller),
-                        const SizedBox(width: 4),
-                        _ProfileAvatar(controller: controller),
-                      ],
+                  const SizedBox(width: 6),
+                  Text(
+                    'READY',
+                    style: AppTextStyles.labelMono.copyWith(
+                      fontSize: 10,
+                      color: AppColors.primary,
                     ),
                   ),
                 ],
               ),
             ),
           ),
-        ),
+        ],
       ),
     );
   }
 }
 
-class _SoundFxButton extends StatelessWidget {
-  const _SoundFxButton({required this.controller});
+/// Bombola grande 240x240 (viewBox del riferimento SVG) con gradienti
+/// propri e scintilla "intermittente" (opacità/scala a keyframe, replica
+/// dell'animazione `intermittentSpark` del riferimento).
+class _BigBombVector extends StatefulWidget {
+  const _BigBombVector();
 
-  final HomeController controller;
+  @override
+  State<_BigBombVector> createState() => _BigBombVectorState();
+}
+
+class _BigBombVectorState extends State<_BigBombVector>
+    with SingleTickerProviderStateMixin {
+  /// Controller custom della scintilla intermittente (ciclo 3s, come il
+  /// keyframes CSS `intermittentSpark` del riferimento).
+  late final AnimationController _spark = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 3000),
+  )..repeat();
+
+  @override
+  void dispose() {
+    _spark.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Obx(
-      () => GestureDetector(
-        onTap: controller.toggleSoundFx,
-        child: Container(
-          width: 44,
-          height: 44,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: AppColors.surfaceContainerHigh,
-            boxShadow: [
-              BoxShadow(
-                color: AppColors.shadow.withValues(alpha: 0.15),
-                offset: const Offset(0, 2),
-                blurRadius: 6,
-              ),
-            ],
-          ),
-          child: Icon(
-            controller.isMuted.value ? Icons.volume_off : Icons.volume_up,
-            size: 20,
-            color: controller.isMuted.value
-                ? AppColors.onSurfaceVariant
-                : AppColors.onSurface,
-          ),
-        ),
-      ),
+    return AnimatedBuilder(
+      animation: _spark,
+      builder: (context, _) {
+        final (opacity, scale) = _intermittentSpark(_spark.value);
+        return CustomPaint(
+          size: const Size(224, 224),
+          painter: _BigBombPainter(sparkOpacity: opacity, sparkScale: scale),
+        );
+      },
     );
   }
 }
 
-class _ProfileAvatar extends StatelessWidget {
-  const _ProfileAvatar({required this.controller});
+/// Keyframes di `intermittentSpark`: (t, opacity, scale). Interpolazione
+/// lineare tra i valori, replica dell'animazione CSS del riferimento.
+const List<(double, double, double)> _sparkKeyframes = [
+  (0.00, 0.25, 0.85),
+  (0.08, 1.00, 1.25),
+  (0.14, 0.40, 0.90),
+  (0.22, 1.00, 1.35),
+  (0.30, 0.30, 0.85),
+  (0.45, 0.95, 1.15),
+  (0.55, 0.20, 0.80),
+  (0.65, 0.90, 1.20),
+  (0.80, 0.35, 0.90),
+  (0.90, 0.80, 1.10),
+  (1.00, 0.25, 0.85),
+];
 
-  final HomeController controller;
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: controller.goProfile,
-      child: Container(
-        width: 32,
-        height: 32,
-        decoration: const BoxDecoration(
-          shape: BoxShape.circle,
-          color: AppColors.primary,
-        ),
-        child: const Icon(Icons.person, size: 18, color: AppColors.onPrimary),
-      ),
-    );
+(double, double) _intermittentSpark(double t) {
+  for (var i = 0; i < _sparkKeyframes.length - 1; i++) {
+    final (t0, o0, s0) = _sparkKeyframes[i];
+    final (t1, o1, s1) = _sparkKeyframes[i + 1];
+    if (t >= t0 && t <= t1) {
+      final f = (t - t0) / (t1 - t0);
+      return (o0 + (o1 - o0) * f, s0 + (s1 - s0) * f);
+    }
   }
+  return (0.25, 0.85);
 }
 
-// ---------------------------------------------------------------------------
-// Pill "Party Mode Pronto"
-// ---------------------------------------------------------------------------
+class _BigBombPainter extends CustomPainter {
+  const _BigBombPainter({required this.sparkOpacity, required this.sparkScale});
 
-class _PartyPill extends StatelessWidget {
-  const _PartyPill({required this.label});
+  final double sparkOpacity;
+  final double sparkScale;
 
-  final String label;
+  static const Offset _sparkCenter = Offset(184, 26);
 
   @override
-  Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.centerLeft,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-        decoration: BoxDecoration(
-          color: AppColors.surfaceContainerLow,
-          borderRadius: BorderRadius.circular(999),
-          boxShadow: [
-            BoxShadow(
-              color: AppColors.shadow.withValues(alpha: 0.2),
-              offset: const Offset(0, 1),
-              blurRadius: 2,
-            ),
+  void paint(Canvas canvas, Size size) {
+    canvas.save();
+    canvas.scale(size.width / 240, size.height / 240);
+
+    _paintFuse(canvas);
+    _paintCap(canvas);
+    _paintBody(canvas);
+    _paintSpark(canvas);
+
+    canvas.restore();
+  }
+
+  /// Stoppino curvo lungo, tratto singolo con dash 6 4.
+  void _paintFuse(Canvas canvas) {
+    final path = Path()
+      ..moveTo(120, 72)
+      ..cubicTo(120, 48, 142, 36, 164, 42)
+      ..cubicTo(174, 45, 180, 38, 182, 28);
+
+    canvas.drawPath(
+      path,
+      Paint()
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 4.5
+        ..strokeCap = StrokeCap.round
+        ..color = AppColors.onSurfaceVariant,
+    );
+
+    _BigBombPainterDashes.draw(canvas, path, const [6, 4]);
+  }
+
+  /// Calotta con gradiente lineare + anello.
+  void _paintCap(Canvas canvas) {
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(
+        const Rect.fromLTWH(108, 62, 24, 12),
+        const Radius.circular(3),
+      ),
+      Paint()
+        ..shader = const LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [Color(0xFF555866), Color(0xFF2D2F38), Color(0xFF181920)],
+        ).createShader(const Rect.fromLTWH(108, 62, 24, 12)),
+    );
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(
+        const Rect.fromLTWH(105, 70, 30, 4),
+        const Radius.circular(2),
+      ),
+      Paint()..color = const Color(0xFF4F4633),
+    );
+  }
+
+  /// Corpo: gradiente radiale propri + riflesso + ombra portata.
+  void _paintBody(Canvas canvas) {
+    final center = const Offset(120, 150);
+    final radius = 76.0;
+
+    // Ombra morbida sotto la bombola.
+    canvas.drawCircle(
+      const Offset(120, 160),
+      radius,
+      Paint()
+        ..color = AppColors.shadow.withValues(alpha: 0.35)
+        ..maskFilter = const ui.MaskFilter.blur(ui.BlurStyle.normal, 12),
+    );
+
+    // Corpo con gradiente radiale (cx 38% cy 34% del riferimento).
+    canvas.drawCircle(
+      center,
+      radius,
+      Paint()
+        ..shader = ui.Gradient.radial(
+          const Offset(96, 104),
+          110,
+          const [
+            Color(0xFF383B48),
+            Color(0xFF22242E),
+            Color(0xFF14151B),
+            Color(0xFF0A0B0E),
           ],
+          const [0.0, 0.45, 0.85, 1.0],
         ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            _PingDot(size: 10, color: AppColors.primaryContainer),
-            const SizedBox(width: 8),
-            Text(
-              label,
-              style: AppTextStyles.labelPill.copyWith(
-                color: AppColors.primaryContainer,
-                letterSpacing: 0.6,
-              ),
-            ),
-          ],
-        ),
-      ),
+    );
+    canvas.drawCircle(
+      center,
+      radius,
+      Paint()
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 2
+        ..color = const Color(0xFF383B48).withValues(alpha: 0.6),
+    );
+
+    // Arco di riflesso speculare.
+    final arc = Path()
+      ..moveTo(66, 120)
+      ..cubicTo(72, 96, 94, 82, 114, 78);
+    canvas.drawPath(
+      arc,
+      Paint()
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 3.5
+        ..strokeCap = StrokeCap.round
+        ..color = AppColors.onSurface.withValues(alpha: 0.2),
     );
   }
-}
 
-// ---------------------------------------------------------------------------
-// Hero logo
-// ---------------------------------------------------------------------------
+  /// Scintilla con core a gradiente radiale, glow e scala/opacità
+  /// intermittenti.
+  void _paintSpark(Canvas canvas) {
+    void drawSparkGroup({required double alphaMul, MaskFilter? blur}) {
+      final corePaint = Paint()
+        ..shader = ui.Gradient.radial(
+          _sparkCenter,
+          16,
+          const [
+            Color(0xFFFFFFFF),
+            Color(0xFFFFE177),
+            Color(0xFFFBBF24),
+            Color(0x00FBBF24),
+          ],
+          const [0.0, 0.3, 0.7, 1.0],
+        )
+        ..color = AppColors.primaryContainer.withValues(alpha: alphaMul)
+        ..maskFilter = blur;
+      canvas.drawCircle(_sparkCenter, 14, corePaint);
 
-class _HeroLogo extends StatelessWidget {
-  const _HeroLogo();
+      // Stella a 4 punte.
+      final star = Path()
+        ..moveTo(184, 10)
+        ..lineTo(187, 22)
+        ..lineTo(198, 26)
+        ..lineTo(187, 30)
+        ..lineTo(184, 42)
+        ..lineTo(181, 30)
+        ..lineTo(170, 26)
+        ..lineTo(181, 22)
+        ..close();
+      canvas.drawPath(
+        star,
+        Paint()
+          ..color = AppColors.primary.withValues(alpha: alphaMul)
+          ..maskFilter = blur,
+      );
+
+      // Centro bianco.
+      canvas.drawCircle(
+        _sparkCenter,
+        2.2,
+        Paint()..color = Colors.white.withValues(alpha: alphaMul),
+      );
+    }
+
+    canvas.save();
+    canvas.translate(_sparkCenter.dx, _sparkCenter.dy);
+    canvas.scale(sparkScale);
+    canvas.translate(-_sparkCenter.dx, -_sparkCenter.dy);
+
+    drawSparkGroup(
+      alphaMul: sparkOpacity * 0.6,
+      blur: ui.MaskFilter.blur(ui.BlurStyle.normal, 4),
+    );
+    drawSparkGroup(alphaMul: sparkOpacity);
+
+    canvas.restore();
+  }
 
   @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: SizedBox(
-        width: 200,
-        height: 120,
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            // Glow radiale ambientale dietro il logo.
-            Container(
-              width: 200,
-              height: 200,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                gradient: RadialGradient(
-                  colors: [
-                    AppColors.primaryContainer.withValues(alpha: 0.25),
-                    AppColors.primaryContainer.withValues(alpha: 0.0),
-                  ],
-                ),
-              ),
-            ),
-            Image.asset(
-              'assets/images/logo.jpg',
-              width: 176,
-              height: 96,
-              fit: BoxFit.contain,
-            ),
-          ],
-        ),
-      ),
-    );
+  bool shouldRepaint(_BigBombPainter oldDelegate) {
+    return oldDelegate.sparkOpacity != sparkOpacity ||
+        oldDelegate.sparkScale != sparkScale;
+  }
+}
+
+/// Helper per i tratti tratteggiati dello stoppino grande.
+abstract final class _BigBombPainterDashes {
+  static void draw(Canvas canvas, Path path, List<double> dashPattern) {
+    for (final metric in path.computeMetrics()) {
+      var distance = 0.0;
+      var draw = true;
+      var index = 0;
+      while (distance < metric.length) {
+        final segment = dashPattern[index % dashPattern.length];
+        final end = (distance + segment).clamp(0.0, metric.length);
+        if (draw) {
+          canvas.drawPath(
+            metric.extractPath(distance, end),
+            Paint()
+              ..style = PaintingStyle.stroke
+              ..strokeWidth = 2
+              ..strokeCap = StrokeCap.round
+              ..color = AppColors.onSurface,
+          );
+        }
+        distance = end;
+        index++;
+        draw = !draw;
+      }
+    }
   }
 }
 
 // ---------------------------------------------------------------------------
-// Mascotte
+// Titolo + sottotitolo
 // ---------------------------------------------------------------------------
 
-class _MascotStage extends StatelessWidget {
-  const _MascotStage({required this.controller});
+class _TitleGroup extends StatelessWidget {
+  const _TitleGroup({required this.l10n});
 
-  final HomeController controller;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      child: Center(
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            // Glow radiale ambientale primario.
-            Container(
-              width: 224,
-              height: 224,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                gradient: RadialGradient(
-                  colors: [
-                    AppColors.primaryContainer.withValues(alpha: 0.15),
-                    AppColors.primaryContainer.withValues(alpha: 0.0),
-                  ],
-                ),
-              ),
-            ),
-            // Glow secondario caldo pulsante in alto a destra.
-            Positioned(
-              top: -4,
-              right: 40,
-              child: _PulsingGlow(
-                size: 112,
-                color: AppColors.secondaryContainer.withValues(alpha: 0.2),
-              ),
-            ),
-            Obx(
-              () => AnimatedRotation(
-                turns: controller.mascotTilt.value / 360,
-                duration: const Duration(milliseconds: 150),
-                child: AnimatedScale(
-                  scale: controller.mascotScale.value,
-                  duration: const Duration(milliseconds: 300),
-                  child: GestureDetector(
-                    onTap: controller.mascotBounce,
-                    child: const _MascotBody(),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _MascotBody extends StatelessWidget {
-  const _MascotBody();
+  final AppLocalizations l10n;
 
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisSize: MainAxisSize.min,
       children: [
-        const _FuseCluster(),
-        Transform.translate(
-          offset: const Offset(0, -16),
-          child: const _BombBody(),
+        Text.rich(
+          TextSpan(
+            text: 'TIC',
+            children: [
+              TextSpan(
+                text: 'BOOM',
+                style: AppTextStyles.displayHero.copyWith(
+                  color: AppColors.primaryContainer,
+                ),
+              ),
+            ],
+          ),
+          style: AppTextStyles.displayHero.copyWith(color: AppColors.onSurface),
         ),
         const SizedBox(height: 8),
-        // Ombra a terra della mascotte.
-        Container(
-          width: 144,
-          height: 16,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: AppColors.surfaceContainerLowest.withValues(alpha: 0.8),
+        Text(
+          l10n.paroleSottoPressione,
+          textAlign: TextAlign.center,
+          style: AppTextStyles.body.copyWith(color: AppColors.onSurfaceVariant),
+        ),
+        const SizedBox(height: 2),
+        Text(
+          l10n.chiHaLaBomba,
+          textAlign: TextAlign.center,
+          style: AppTextStyles.body.copyWith(
+            color: AppColors.secondary,
+            fontWeight: FontWeight.w500,
           ),
         ),
       ],
@@ -391,393 +526,12 @@ class _MascotBody extends StatelessWidget {
   }
 }
 
-class _FuseCluster extends StatelessWidget {
-  const _FuseCluster();
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: 112,
-      height: 64,
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          CustomPaint(
-            size: const Size(96, 64),
-            painter: _FusePainter(),
-          ),
-          const Positioned(top: 0, right: 16, child: _LitFuseSpark()),
-        ],
-      ),
-    );
-  }
-}
-
-/// Disegna la curva dello stoppino del riferimento SVG:
-/// `M 28 54 C 28 25, 65 35, 76 12` su viewBox 100x60, due tratti.
-class _FusePainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    canvas.save();
-    canvas.scale(size.width / 100, size.height / 60);
-
-    final path = Path()
-      ..moveTo(28, 54)
-      ..cubicTo(28, 25, 65, 35, 76, 12);
-
-    // Tratto pieno beige (outline).
-    canvas.drawPath(
-      path,
-      Paint()
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = 6
-        ..strokeCap = StrokeCap.round
-        ..color = AppColors.outline,
-    );
-
-    // Tratto tratteggiato scuro (texture corda).
-    final dashPaint = Paint()
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 2
-      ..strokeCap = StrokeCap.round
-      ..color = AppColors.outlineVariant;
-
-    for (final metric in path.computeMetrics()) {
-      var distance = 0.0;
-      var draw = true;
-      while (distance < metric.length) {
-        final end = (distance + (draw ? 2 : 4)).clamp(0.0, metric.length);
-        if (draw) {
-          canvas.drawPath(metric.extractPath(distance, end), dashPaint);
-        }
-        distance = end;
-        draw = !draw;
-      }
-    }
-
-    canvas.restore();
-  }
-
-  @override
-  bool shouldRepaint(_FusePainter oldDelegate) => false;
-}
-
-class _LitFuseSpark extends StatelessWidget {
-  const _LitFuseSpark();
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: 52,
-      height: 52,
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          // Fiamma principale con glow, rimbalzo continuo.
-          _BouncingFire(),
-          // Scintille orbitanti.
-          const Positioned(
-            top: 0,
-            right: 0,
-            child: _PingDot(size: 10, color: AppColors.secondary),
-          ),
-          const Positioned(
-            bottom: 4,
-            left: 4,
-            child: _PingDot(size: 8, color: AppColors.primaryContainer),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _BouncingFire extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return _LoopAnimationBuilder(
-      duration: const Duration(milliseconds: 800),
-      builder: (context, value) {
-        return Transform.translate(
-          offset: Offset(0, 6 * value - 6),
-          child: Container(
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              boxShadow: [
-                BoxShadow(
-                  color: AppColors.primaryContainer.withValues(alpha: 0.9),
-                  blurRadius: 12,
-                ),
-              ],
-            ),
-            child: const Icon(
-              Icons.local_fire_department,
-              size: 36,
-              color: AppColors.primaryContainer,
-            ),
-          ),
-        );
-      },
-    );
-  }
-}
-
-class _BombBody extends StatelessWidget {
-  const _BombBody();
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: 176,
-      height: 176,
-      child: Stack(
-        clipBehavior: Clip.none,
-        alignment: Alignment.center,
-        children: [
-          // Corpo nero lucido con ombra esterna.
-          Container(
-            width: 176,
-            height: 176,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: AppColors.surfaceContainerLowest,
-              boxShadow: [
-                BoxShadow(
-                  color: AppColors.shadow.withValues(alpha: 0.5),
-                  offset: const Offset(0, 16),
-                  blurRadius: 28,
-                ),
-              ],
-            ),
-          ),
-          // Inner shadow in basso (fondo scuro).
-          Positioned.fill(
-            child: ClipOval(
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      AppColors.shadow.withValues(alpha: 0.0),
-                      AppColors.shadow.withValues(alpha: 0.8),
-                    ],
-                    stops: const [0.6, 1.0],
-                  ),
-                ),
-              ),
-            ),
-          ),
-          // Calotta sopra la bombola.
-          Positioned(
-            top: -12,
-            left: (176 - 56) / 2,
-            child: Container(
-              width: 56,
-              height: 20,
-              decoration: BoxDecoration(
-                shape: BoxShape.rectangle,
-                borderRadius: BorderRadius.circular(999),
-                color: AppColors.surfaceContainerHighest,
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    AppColors.surfaceContainerHighest,
-                    AppColors.outlineVariant,
-                  ],
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: AppColors.shadow.withValues(alpha: 0.4),
-                    offset: const Offset(0, 2),
-                    blurRadius: 4,
-                  ),
-                ],
-              ),
-            ),
-          ),
-          // Riflesso speculare ovale (gloss).
-          Positioned(
-            top: 16,
-            left: 24,
-            child: Transform.rotate(
-              angle: -35 * math.pi / 180,
-              child: Container(
-                width: 48,
-                height: 24,
-                decoration: BoxDecoration(
-                  shape: BoxShape.rectangle,
-                  borderRadius: BorderRadius.circular(999),
-                  color: AppColors.primary.withValues(alpha: 0.2),
-                ),
-              ),
-            ),
-          ),
-          // Bolla di riflesso secondaria.
-          Positioned(
-            top: 28,
-            left: 16,
-            child: Container(
-              width: 14,
-              height: 14,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: AppColors.primary.withValues(alpha: 0.3),
-              ),
-            ),
-          ),
-          // Faccia cartoon.
-          const _MascotFace(),
-        ],
-      ),
-    );
-  }
-}
-
-class _MascotFace extends StatelessWidget {
-  const _MascotFace();
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              _MascotEye(pupilAlignment: Alignment.topRight),
-              const SizedBox(width: 20),
-              _MascotEye(pupilAlignment: Alignment.topLeft),
-            ],
-          ),
-          const SizedBox(height: 8),
-          _MascotMouth(),
-        ],
-      ),
-    );
-  }
-}
-
-class _MascotEye extends StatelessWidget {
-  const _MascotEye({required this.pupilAlignment});
-
-  final Alignment pupilAlignment;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 32,
-      height: 40,
-      decoration: const BoxDecoration(
-        shape: BoxShape.circle,
-        color: AppColors.primary,
-      ),
-      child: Align(
-        alignment: pupilAlignment,
-        child: Container(
-          margin: const EdgeInsets.only(top: 8, left: 6, right: 6),
-          width: 16,
-          height: 20,
-          decoration: const BoxDecoration(
-            shape: BoxShape.circle,
-            color: AppColors.surfaceContainerLowest,
-          ),
-          child: Align(
-            alignment: pupilAlignment,
-            child: Container(
-              margin: const EdgeInsets.only(top: 2, left: 2, right: 2),
-              width: 6,
-              height: 6,
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                color: AppColors.primary,
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _MascotMouth extends StatelessWidget {
-  const _MascotMouth();
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: 120,
-      height: 16,
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          // Guance rosa.
-          Positioned(
-            left: 0,
-            child: Container(
-              width: 14,
-              height: 8,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: AppColors.secondary.withValues(alpha: 0.4),
-              ),
-            ),
-          ),
-          Positioned(
-            right: 0,
-            child: Container(
-              width: 14,
-              height: 8,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: AppColors.secondary.withValues(alpha: 0.4),
-              ),
-            ),
-          ),
-          // Sorriso con lingua.
-          Container(
-            width: 32,
-            height: 16,
-            decoration: BoxDecoration(
-              borderRadius: const BorderRadius.vertical(
-                bottom: Radius.circular(16),
-              ),
-              color: AppColors.secondaryContainer,
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  AppColors.shadow.withValues(alpha: 0.4),
-                  AppColors.shadow.withValues(alpha: 0.0),
-                ],
-                stops: const [0.0, 0.35],
-              ),
-            ),
-            child: Center(
-              child: Container(
-                width: 16,
-                height: 8,
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: AppColors.tertiaryContainer,
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
 // ---------------------------------------------------------------------------
-// Pulsanti menu
+// Zona azioni: CTA, card secondarie, card di stato
 // ---------------------------------------------------------------------------
 
-class _MenuButtons extends StatelessWidget {
-  const _MenuButtons({required this.controller, required this.l10n});
+class _ActionZone extends StatelessWidget {
+  const _ActionZone({required this.controller, required this.l10n});
 
   final HomeController controller;
   final AppLocalizations l10n;
@@ -787,163 +541,153 @@ class _MenuButtons extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        _LedgeButton(
-          baseColor: AppColors.onPrimaryFixedVariant,
-          baseGlow: BoxShadow(
-            color: AppColors.primaryFixedDim.withValues(alpha: 0.3),
-            offset: const Offset(0, 8),
-            blurRadius: 20,
-          ),
-          faceColor: AppColors.primaryContainer,
-          faceHeight: 72,
-          baseOffset: 6,
-          onTap: controller.goSetup,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Icon(
-                Icons.play_arrow,
-                size: 32,
-                color: AppColors.onPrimary,
-                shadows: [
-                  Shadow(
-                    color: AppColors.onPrimaryFixedVariant,
-                    offset: Offset(0, 1),
-                    blurRadius: 2,
-                  ),
-                ],
+        _PlayCta(controller: controller, label: l10n.giocaSubito),
+        const SizedBox(height: 12),
+        Row(
+          children: [
+            Expanded(
+              child: _SecondaryCard(
+                icon: Icons.menu_book,
+                iconColor: AppColors.primary,
+                label: l10n.regole,
+                onTap: controller.goRules,
               ),
-              const SizedBox(width: 12),
-              Flexible(
-                child: Text(
-                  l10n.play,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: AppTextStyles.headline.copyWith(
-                    color: AppColors.onPrimary,
-                    letterSpacing: 1.4,
-                  ),
-                ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: _SecondaryCard(
+                icon: Icons.tune,
+                iconColor: AppColors.primary,
+                label: l10n.setup,
+                onTap: controller.goSettings,
               ),
-              const SizedBox(width: 12),
-              const _RotatingSparkle(),
-            ],
-          ),
+            ),
+          ],
         ),
-        const SizedBox(height: 16),
-        _LedgeButton(
-          baseColor: AppColors.surfaceContainerLowest,
-          faceColor: AppColors.surfaceContainerHigh,
-          faceHeight: 64,
-          baseOffset: 4,
-          onTap: controller.goRules,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Icon(
-                Icons.menu_book,
-                size: 22,
-                color: AppColors.primaryContainer,
-              ),
-              const SizedBox(width: 12),
-              Flexible(
-                child: Text(
-                  l10n.howToPlay,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: AppTextStyles.labelAction.copyWith(
-                    color: AppColors.onSurface,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-        const SizedBox(height: 16),
-        _LedgeButton(
-          baseColor: AppColors.surfaceContainerLowest,
-          faceColor: AppColors.surfaceContainerHigh,
-          faceHeight: 64,
-          baseOffset: 4,
-          onTap: controller.goSettings,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Icon(
-                Icons.settings,
-                size: 22,
-                color: AppColors.onSurfaceVariant,
-              ),
-              const SizedBox(width: 12),
-              Flexible(
-                child: Text(
-                  l10n.settings,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: AppTextStyles.labelAction.copyWith(
-                    color: AppColors.onSurface,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
+        const SizedBox(height: 12),
+        _StatusCard(label: l10n.multiplayerStatus),
       ],
     );
   }
 }
 
-/// Pulsante con "base 3D" scura sotto la faccia, traslata in basso
-/// (ledge shadow del riferimento).
-class _LedgeButton extends StatelessWidget {
-  const _LedgeButton({
-    required this.baseColor,
-    required this.faceColor,
-    required this.faceHeight,
-    required this.baseOffset,
-    required this.onTap,
-    required this.child,
-    this.baseGlow,
-  });
+class _PlayCta extends StatefulWidget {
+  const _PlayCta({required this.controller, required this.label});
 
-  final Color baseColor;
-  final Color faceColor;
-  final double faceHeight;
-  final double baseOffset;
-  final VoidCallback onTap;
-  final Widget child;
-  final BoxShadow? baseGlow;
+  final HomeController controller;
+  final String label;
+
+  @override
+  State<_PlayCta> createState() => _PlayCtaState();
+}
+
+class _PlayCtaState extends State<_PlayCta> {
+  bool _pressed = false;
+
+  Future<void> _handleTap() async {
+    if (_pressed) {
+      return;
+    }
+    setState(() => _pressed = true);
+    // Feedback tattile composito (replica navigator.vibrate([15,30,25])).
+    HapticFeedback.mediumImpact();
+    await Future<void>.delayed(const Duration(milliseconds: 120));
+    if (!mounted) {
+      return;
+    }
+    setState(() => _pressed = false);
+    widget.controller.goPlay();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final borderRadius = BorderRadius.circular(999);
-
-    return GestureDetector(
-      onTap: onTap,
-      child: SizedBox(
-        height: faceHeight + baseOffset,
-        child: Stack(
-          children: [
-            Positioned.fill(
-              child: Transform.translate(
-                offset: Offset(0, baseOffset),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: baseColor,
-                    borderRadius: borderRadius,
-                    boxShadow: baseGlow != null ? [baseGlow!] : null,
-                  ),
+    return AnimatedScale(
+      scale: _pressed ? 0.98 : 1.0,
+      duration: const Duration(milliseconds: 120),
+      curve: Curves.easeOut,
+      child: GestureDetector(
+        onTap: _handleTap,
+        child: Container(
+          height: 54,
+          decoration: BoxDecoration(
+            color: AppColors.primaryContainer,
+            borderRadius: BorderRadius.circular(12),
+            boxShadow: const [
+              BoxShadow(
+                color: Color(0x38FBBF24), // rgba(251,191,36,0.22)
+                offset: Offset(0, 4),
+                blurRadius: 20,
+              ),
+            ],
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(
+                Icons.play_arrow,
+                size: 24,
+                color: AppColors.onPrimaryFixed,
+              ),
+              const SizedBox(width: 8),
+              Text(
+                widget.label.toUpperCase(),
+                style: AppTextStyles.labelAction.copyWith(
+                  color: AppColors.onPrimaryFixed,
                 ),
               ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _SecondaryCard extends StatelessWidget {
+  const _SecondaryCard({
+    required this.icon,
+    required this.iconColor,
+    required this.label,
+    required this.onTap,
+  });
+
+  final IconData icon;
+  final Color iconColor;
+  final String label;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        height: 48,
+        decoration: BoxDecoration(
+          color: AppColors.surfaceContainerLow,
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: AppColors.shadow.withValues(alpha: 0.15),
+              offset: const Offset(0, 1),
+              blurRadius: 2,
             ),
-            Positioned.fill(
-              child: Container(
-                decoration: BoxDecoration(
-                  color: faceColor,
-                  borderRadius: borderRadius,
+          ],
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, size: 18, color: iconColor),
+            const SizedBox(width: 8),
+            Flexible(
+              child: Text(
+                label,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: AppTextStyles.body.copyWith(
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: 0.3,
+                  color: AppColors.onSurface,
                 ),
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: child,
               ),
             ),
           ],
@@ -953,62 +697,49 @@ class _LedgeButton extends StatelessWidget {
   }
 }
 
-class _RotatingSparkle extends StatelessWidget {
-  const _RotatingSparkle();
-
-  @override
-  Widget build(BuildContext context) {
-    return _LoopAnimationBuilder(
-      duration: const Duration(seconds: 3),
-      curve: Curves.linear,
-      repeatReverse: false,
-      builder: (context, value) {
-        return Transform.rotate(
-          angle: 2 * math.pi * value,
-          child: const Icon(
-            Icons.auto_awesome,
-            size: 20,
-            color: AppColors.onPrimaryContainer,
-          ),
-        );
-      },
-    );
-  }
-}
-
-// ---------------------------------------------------------------------------
-// Badge multiplayer
-// ---------------------------------------------------------------------------
-
-class _MultiplayerBadge extends StatelessWidget {
-  const _MultiplayerBadge({required this.label});
+class _StatusCard extends StatelessWidget {
+  const _StatusCard({required this.label});
 
   final String label;
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        decoration: BoxDecoration(
-          color: AppColors.surfaceContainerLowest,
-          borderRadius: BorderRadius.circular(999),
-          border: Border.all(color: AppColors.outlineVariant, width: 1),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Icon(Icons.groups, size: 16, color: AppColors.primaryContainer),
-            const SizedBox(width: 8),
-            Text(
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+      decoration: BoxDecoration(
+        color: AppColors.surfaceContainerLowest,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.shadow.withValues(alpha: 0.15),
+            offset: const Offset(0, 1),
+            blurRadius: 2,
+          ),
+        ],
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Icon(
+            Icons.phonelink_ring,
+            size: 16,
+            color: AppColors.tertiaryContainer,
+          ),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
               label,
-              style: AppTextStyles.labelPill.copyWith(
+              textAlign: TextAlign.center,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: AppTextStyles.labelMono.copyWith(
+                fontSize: 10,
+                letterSpacing: 0.4,
                 color: AppColors.onSurfaceVariant,
-                letterSpacing: 0.6,
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -1018,96 +749,10 @@ class _MultiplayerBadge extends StatelessWidget {
 // Widget animati privati (loop)
 // ---------------------------------------------------------------------------
 
-/// AnimationController in loop riusato dai widget animati della pagina.
-class _LoopAnimationBuilder extends StatefulWidget {
-  const _LoopAnimationBuilder({
-    required this.duration,
-    required this.builder,
-    this.curve = Curves.easeInOut,
-    this.repeatReverse = true,
-  });
-
-  final Duration duration;
-  final Widget Function(BuildContext context, double value) builder;
-  final Curve curve;
-  final bool repeatReverse;
-
-  @override
-  State<_LoopAnimationBuilder> createState() => _LoopAnimationBuilderState();
-}
-
-class _LoopAnimationBuilderState extends State<_LoopAnimationBuilder>
-    with SingleTickerProviderStateMixin {
-  late final AnimationController _controller = AnimationController(
-    vsync: this,
-    duration: widget.duration,
-  )..repeat(reverse: widget.repeatReverse);
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: CurvedAnimation(parent: _controller, curve: widget.curve),
-      builder: (context, _) => widget.builder(context, _controller.value),
-    );
-  }
-}
-
-/// Puntino con "ping" continuo (anello che si espande e svanisce).
-class _PingDot extends StatelessWidget {
-  const _PingDot({required this.size, required this.color});
-
-  final double size;
-  final Color color;
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: size * 2,
-      height: size * 2,
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          _LoopAnimationBuilder(
-            duration: const Duration(milliseconds: 1200),
-            curve: Curves.easeOut,
-            repeatReverse: false,
-            builder: (context, value) {
-              return Transform.scale(
-                scale: 1.0 + value * 0.8,
-                child: Opacity(
-                  opacity: (1 - value).clamp(0.0, 1.0) * 0.7,
-                  child: Container(
-                    width: size,
-                    height: size,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: color,
-                    ),
-                  ),
-                ),
-              );
-            },
-          ),
-          Container(
-            width: size,
-            height: size,
-            decoration: BoxDecoration(shape: BoxShape.circle, color: color),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-/// Glow circolare con opacità pulsante.
-class _PulsingGlow extends StatelessWidget {
-  const _PulsingGlow({required this.size, required this.color});
+/// Puntino con pulse continuo (opacità che respira, `animate-pulse` del
+/// riferimento).
+class _PulseDot extends StatelessWidget {
+  const _PulseDot({required this.size, required this.color});
 
   final double size;
   final Color color;
@@ -1118,22 +763,47 @@ class _PulsingGlow extends StatelessWidget {
       duration: const Duration(milliseconds: 2000),
       builder: (context, value) {
         return Opacity(
-          opacity: 0.5 + 0.5 * value,
+          opacity: 0.4 + 0.6 * value,
           child: Container(
             width: size,
             height: size,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              gradient: RadialGradient(
-                colors: [
-                  color,
-                  color.withValues(alpha: 0.0),
-                ],
-              ),
-            ),
+            decoration: BoxDecoration(shape: BoxShape.circle, color: color),
           ),
         );
       },
+    );
+  }
+}
+
+/// AnimationController in loop riusato dai widget animati della pagina.
+class _LoopAnimationBuilder extends StatefulWidget {
+  const _LoopAnimationBuilder({required this.duration, required this.builder});
+
+  final Duration duration;
+  final Widget Function(BuildContext context, double value) builder;
+
+  @override
+  State<_LoopAnimationBuilder> createState() => _LoopAnimationBuilderState();
+}
+
+class _LoopAnimationBuilderState extends State<_LoopAnimationBuilder>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller = AnimationController(
+    vsync: this,
+    duration: widget.duration,
+  )..repeat(reverse: true);
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _controller,
+      builder: (context, _) => widget.builder(context, _controller.value),
     );
   }
 }

@@ -7,13 +7,16 @@ import 'package:ticboom/features/home/view/bindings/home_bindings.dart';
 import 'package:ticboom/features/home/view/pages/home_page.dart';
 import 'package:ticboom/features/onboarding/view/bindings/onboarding_bindings.dart';
 import 'package:ticboom/features/onboarding/view/pages/onboarding_page.dart';
+import 'package:ticboom/features/party_rooms/view/pages/party_rooms_page.dart';
 import 'package:ticboom/features/profile/view/bindings/profile_bindings.dart';
 import 'package:ticboom/features/profile/view/pages/profile_page.dart';
+import 'package:ticboom/features/rules/view/bindings/rules_bindings.dart';
 import 'package:ticboom/features/rules/view/pages/rules_page.dart';
 import 'package:ticboom/features/settings/view/pages/settings_page.dart';
 import 'package:ticboom/features/setup/view/pages/setup_page.dart';
 import 'package:ticboom/features/splash/view/bindings/splash_bindings.dart';
 import 'package:ticboom/features/splash/view/pages/splash_page.dart';
+import 'package:ticboom/features/vault_records/view/pages/vault_records_page.dart';
 
 final rootNavigatorKey = GlobalKey<NavigatorState>();
 
@@ -67,6 +70,7 @@ GoRouter buildRootRouter() {
         path: AppRoute.howToPlayRules.path,
         name: AppRoute.howToPlayRules.name,
         pageBuilder: (context, state) {
+          const RulesBindings().dependencies();
           return const MaterialPage(child: RulesPage());
         },
       ),
@@ -75,6 +79,20 @@ GoRouter buildRootRouter() {
         name: AppRoute.gameSettings.name,
         pageBuilder: (context, state) {
           return const MaterialPage(child: SettingsPage());
+        },
+      ),
+      GoRoute(
+        path: AppRoute.partyRooms.path,
+        name: AppRoute.partyRooms.name,
+        pageBuilder: (context, state) {
+          return const MaterialPage(child: PartyRoomsPage());
+        },
+      ),
+      GoRoute(
+        path: AppRoute.vaultRecords.path,
+        name: AppRoute.vaultRecords.name,
+        pageBuilder: (context, state) {
+          return const MaterialPage(child: VaultRecordsPage());
         },
       ),
     ],

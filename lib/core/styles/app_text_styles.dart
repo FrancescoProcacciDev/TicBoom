@@ -237,60 +237,78 @@ abstract class AppTextStyles {
   );
 
   // ───────────────────── Captions & Overline ─────────────────────
-  static const TextStyle caption = TextStyle(
+  /// Caption del riferimento: Geist 400, corpo piccolo.
+  static final TextStyle caption = GoogleFonts.geist(
     fontSize: 11,
     fontWeight: FontWeight.w400,
     height: 16 / 11,
     letterSpacing: 0.5,
-    color: Colors.grey,
   );
 
   // ───────────────────── TicBoom reference (Home Menu) ─────────────────────
-  // Stili replicati dal design reference HTML.
+  // Stili replicati dal design reference HTML (font: Space Grotesk headline +
+  // Geist corpo).
 
-  /// Headline del riferimento: Rubik 800 (GIOCA, titoli).
-  static final TextStyle headline = GoogleFonts.rubik(
+  /// Headline del riferimento: Space Grotesk 700 (GIOCA, titoli).
+  static final TextStyle headline = GoogleFonts.spaceGrotesk(
     fontSize: 28,
-    fontWeight: FontWeight.w800,
+    fontWeight: FontWeight.w700,
     height: 34 / 28,
     letterSpacing: -0.28,
   );
 
-  /// Titolo top bar: Rubik 700 (headline-md del riferimento).
-  static final TextStyle headlineMd = GoogleFonts.rubik(
+  /// Titolo top bar: Space Grotesk 700 (headline-md del riferimento).
+  static final TextStyle headlineMd = GoogleFonts.spaceGrotesk(
     fontSize: 22,
     fontWeight: FontWeight.w700,
     height: 28 / 22,
   );
 
-  /// Titolo centrale top bar: Rubik 700 (title-card del riferimento).
-  static final TextStyle titleCard = GoogleFonts.rubik(
+  /// Titolo centrale top bar: Space Grotesk 700 (title-card del riferimento).
+  static final TextStyle titleCard = GoogleFonts.spaceGrotesk(
     fontSize: 18,
     fontWeight: FontWeight.w700,
     height: 24 / 18,
   );
 
-  /// Azioni secondarie: Plus Jakarta Sans 700 uppercase.
-  static final TextStyle labelAction = GoogleFonts.plusJakartaSans(
+  /// Azioni secondarie: Space Grotesk 700 uppercase.
+  static final TextStyle labelAction = GoogleFonts.spaceGrotesk(
     fontSize: 16,
     fontWeight: FontWeight.w700,
     height: 20 / 16,
     letterSpacing: 0.64,
   );
 
-  /// Pill e badge: Plus Jakarta Sans 600 uppercase, lettering largo.
-  static final TextStyle labelPill = GoogleFonts.plusJakartaSans(
+  /// Pill e badge: Space Grotesk 600 uppercase, lettering largo.
+  static final TextStyle labelPill = GoogleFonts.spaceGrotesk(
     fontSize: 12,
     fontWeight: FontWeight.w600,
     height: 16 / 12,
     letterSpacing: 0.24,
   );
 
-  /// Headline hero della splash: Rubik 800 (display-hero-mobile del
+  /// Testi mono-tecnici (stato sistema, contatori, label di tracking):
+  /// Space Grotesk 600 con tracking ampio, da usare sempre in uppercase.
+  static final TextStyle labelMono = GoogleFonts.spaceGrotesk(
+    fontSize: 11,
+    fontWeight: FontWeight.w600,
+    height: 16 / 11,
+    letterSpacing: 1.4,
+  );
+
+  /// Corpo del riferimento: Geist 400.
+  static final TextStyle body = GoogleFonts.geist(
+    fontSize: 14,
+    fontWeight: FontWeight.w400,
+    height: 20 / 14,
+    letterSpacing: 0.25,
+  );
+
+  /// Headline hero della splash: Space Grotesk 700 (display-hero-mobile del
   /// riferimento).
-  static final TextStyle displayHero = GoogleFonts.rubik(
+  static final TextStyle displayHero = GoogleFonts.spaceGrotesk(
     fontSize: 36,
-    fontWeight: FontWeight.w800,
+    fontWeight: FontWeight.w700,
     height: 42 / 36,
     letterSpacing: -0.36,
   );

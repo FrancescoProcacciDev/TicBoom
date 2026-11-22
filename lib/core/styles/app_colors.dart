@@ -1,76 +1,76 @@
 import 'package:flutter/material.dart';
 
 /// Palette replicata dal design reference HTML (tailwind.config).
-/// Scheme scuro navy + accento giallo "party".
+/// Scheme scuro antracite/carbone + accento giallo ambra "party".
 abstract final class AppColors {
   // ---------------------------------------------------------------------------
-  // Background & surface (toni navy)
+  // Background & surface (toni carbone)
   // ---------------------------------------------------------------------------
 
-  static const Color background = Color(0xFF101221);
-  static const Color onBackground = Color(0xFFE1E1F6);
+  static const Color background = Color(0xFF121318);
+  static const Color onBackground = Color(0xFFE3E1E9);
 
-  static const Color surface = Color(0xFF101221);
-  static const Color onSurface = Color(0xFFE1E1F6);
-  static const Color surfaceDim = Color(0xFF101221);
-  static const Color surfaceBright = Color(0xFF363849);
-  static const Color surfaceContainerLowest = Color(0xFF0B0D1C);
-  static const Color surfaceContainerLow = Color(0xFF191A2A);
-  static const Color surfaceContainer = Color(0xFF1D1F2E);
-  static const Color surfaceContainerHigh = Color(0xFF272939);
-  static const Color surfaceContainerHighest = Color(0xFF323444);
-  static const Color surfaceVariant = Color(0xFF323444);
-  static const Color onSurfaceVariant = Color(0xFFD0C6AE);
-  static const Color surfaceTint = Color(0xFFECC236);
+  static const Color surface = Color(0xFF121318);
+  static const Color onSurface = Color(0xFFE3E1E9);
+  static const Color surfaceDim = Color(0xFF121318);
+  static const Color surfaceBright = Color(0xFF38393F);
+  static const Color surfaceContainerLowest = Color(0xFF0D0E13);
+  static const Color surfaceContainerLow = Color(0xFF1A1B21);
+  static const Color surfaceContainer = Color(0xFF1E1F25);
+  static const Color surfaceContainerHigh = Color(0xFF292A2F);
+  static const Color surfaceContainerHighest = Color(0xFF34343A);
+  static const Color surfaceVariant = Color(0xFF34343A);
+  static const Color onSurfaceVariant = Color(0xFFD3C5AC);
+  static const Color surfaceTint = Color(0xFFF9BD22);
 
-  static const Color outline = Color(0xFF99907A);
-  static const Color outlineVariant = Color(0xFF4D4634);
+  static const Color outline = Color(0xFF9C8F79);
+  static const Color outlineVariant = Color(0xFF4F4633);
 
   static const Color shadow = Color(0xFF000000);
   static const Color scrim = Color(0xFF000000);
 
-  static const Color inverseSurface = Color(0xFFE1E1F6);
-  static const Color onInverseSurface = Color(0xFF2D2F40);
-  static const Color inversePrimary = Color(0xFF735C00);
+  static const Color inverseSurface = Color(0xFFE3E1E9);
+  static const Color onInverseSurface = Color(0xFF2F3036);
+  static const Color inversePrimary = Color(0xFF795900);
 
   // ---------------------------------------------------------------------------
-  // Primary (giallo "boom")
+  // Primary (giallo ambra "boom")
   // ---------------------------------------------------------------------------
 
-  static const Color primary = Color(0xFFFFF4DD);
-  static const Color onPrimary = Color(0xFF3C2F00);
-  static const Color primaryContainer = Color(0xFFFFD447);
-  static const Color onPrimaryContainer = Color(0xFF735B00);
-  static const Color primaryFixed = Color(0xFFFFE087);
-  static const Color primaryFixedDim = Color(0xFFECC236);
-  static const Color onPrimaryFixed = Color(0xFF231A00);
-  static const Color onPrimaryFixedVariant = Color(0xFF574500);
+  static const Color primary = Color(0xFFFFE1A7);
+  static const Color onPrimary = Color(0xFF402D00);
+  static const Color primaryContainer = Color(0xFFFBBF24);
+  static const Color onPrimaryContainer = Color(0xFF6C4F00);
+  static const Color primaryFixed = Color(0xFFFFDF9F);
+  static const Color primaryFixedDim = Color(0xFFF9BD22);
+  static const Color onPrimaryFixed = Color(0xFF261A00);
+  static const Color onPrimaryFixedVariant = Color(0xFF5C4300);
 
   // ---------------------------------------------------------------------------
-  // Secondary (arancio caldo)
+  // Secondary (rosa cipria)
   // ---------------------------------------------------------------------------
 
-  static const Color secondary = Color(0xFFFFB599);
-  static const Color onSecondary = Color(0xFF5A1C00);
-  static const Color secondaryContainer = Color(0xFFAA3C00);
-  static const Color onSecondaryContainer = Color(0xFFFFD3C3);
-  static const Color secondaryFixed = Color(0xFFFFDBCE);
-  static const Color secondaryFixedDim = Color(0xFFFFB599);
-  static const Color onSecondaryFixed = Color(0xFF370E00);
-  static const Color onSecondaryFixedVariant = Color(0xFF7F2B00);
+  static const Color secondary = Color(0xFFFFB2B7);
+  static const Color onSecondary = Color(0xFF67001B);
+  static const Color secondaryContainer = Color(0xFFB50036);
+  static const Color onSecondaryContainer = Color(0xFFFFC2C4);
+  static const Color secondaryFixed = Color(0xFFFFDADB);
+  static const Color secondaryFixedDim = Color(0xFFFFB2B7);
+  static const Color onSecondaryFixed = Color(0xFF40000D);
+  static const Color onSecondaryFixedVariant = Color(0xFF92002A);
 
   // ---------------------------------------------------------------------------
-  // Tertiary (rosa chiaro)
+  // Tertiary (verde menta)
   // ---------------------------------------------------------------------------
 
-  static const Color tertiary = Color(0xFFFFF2F1);
-  static const Color onTertiary = Color(0xFF680013);
-  static const Color tertiaryContainer = Color(0xFFFFCCCB);
-  static const Color onTertiaryContainer = Color(0xFFBC0D2E);
-  static const Color tertiaryFixed = Color(0xFFFFDAD9);
-  static const Color tertiaryFixedDim = Color(0xFFFFB3B2);
-  static const Color onTertiaryFixed = Color(0xFF410008);
-  static const Color onTertiaryFixedVariant = Color(0xFF920020);
+  static const Color tertiary = Color(0xFF71FDBF);
+  static const Color onTertiary = Color(0xFF003824);
+  static const Color tertiaryContainer = Color(0xFF50E0A5);
+  static const Color onTertiaryContainer = Color(0xFF006041);
+  static const Color tertiaryFixed = Color(0xFF6FBBBE);
+  static const Color tertiaryFixedDim = Color(0xFF4EDEA3);
+  static const Color onTertiaryFixed = Color(0xFF002113);
+  static const Color onTertiaryFixedVariant = Color(0xFF005236);
 
   // ---------------------------------------------------------------------------
   // Error

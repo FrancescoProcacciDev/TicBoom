@@ -5,7 +5,9 @@ enum AppRoute {
   profile('/profile'),
   gameConfig('/game-config'),
   howToPlayRules('/how-to-play-rules'),
-  gameSettings('/game-settings');
+  gameSettings('/app-settings'),
+  partyRooms('/party-rooms'),
+  vaultRecords('/vault-records');
 
   final String path;
 

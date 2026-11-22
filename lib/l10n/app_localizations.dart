@@ -98,107 +98,197 @@ abstract class AppLocalizations {
     Locale('it'),
   ];
 
-  /// No description provided for @appTitle.
-  ///
-  /// In it, this message translates to:
-  /// **'App'**
-  String get appTitle;
-
-  /// No description provided for @homeMenuTitle.
-  ///
-  /// In it, this message translates to:
-  /// **'HOME MENU'**
-  String get homeMenuTitle;
-
-  /// No description provided for @partyModeReady.
-  ///
-  /// In it, this message translates to:
-  /// **'PARTY MODE PRONTO'**
-  String get partyModeReady;
-
-  /// No description provided for @play.
-  ///
-  /// In it, this message translates to:
-  /// **'GIOCA'**
-  String get play;
-
-  /// No description provided for @howToPlay.
-  ///
-  /// In it, this message translates to:
-  /// **'COME SI GIOCA'**
-  String get howToPlay;
-
-  /// No description provided for @settings.
-  ///
-  /// In it, this message translates to:
-  /// **'IMPOSTAZIONI'**
-  String get settings;
-
-  /// No description provided for @multiplayerBadge.
-  ///
-  /// In it, this message translates to:
-  /// **'MULTIPLAYER LOCALE • 2-20 GIOCATORI'**
-  String get multiplayerBadge;
-
-  /// No description provided for @navParty.
-  ///
-  /// In it, this message translates to:
-  /// **'PARTY'**
-  String get navParty;
-
-  /// No description provided for @navSetup.
-  ///
-  /// In it, this message translates to:
-  /// **'SETUP'**
-  String get navSetup;
-
-  /// No description provided for @navRules.
-  ///
-  /// In it, this message translates to:
-  /// **'RULES'**
-  String get navRules;
-
-  /// No description provided for @navSettings.
-  ///
-  /// In it, this message translates to:
-  /// **'SETTINGS'**
-  String get navSettings;
-
-  /// No description provided for @partyGameEsplosivo.
-  ///
-  /// In it, this message translates to:
-  /// **'PARTY GAME ESPLOSIVO'**
-  String get partyGameEsplosivo;
-
-  /// No description provided for @splashHeadline.
-  ///
-  /// In it, this message translates to:
-  /// **'Passala prima'**
-  String get splashHeadline;
-
-  /// No description provided for @splashHeadlineAccent.
-  ///
-  /// In it, this message translates to:
-  /// **'che esploda!'**
-  String get splashHeadlineAccent;
-
-  /// No description provided for @splashSubtitle.
-  ///
-  /// In it, this message translates to:
-  /// **'Il frenetico gioco da tavolo pass-and-play per fare scintille con gli amici.'**
-  String get splashSubtitle;
-
-  /// No description provided for @explosionAlertLevel.
-  ///
-  /// In it, this message translates to:
-  /// **'ALLERTA ESPLOSIONE LIVELLO 10'**
-  String get explosionAlertLevel;
-
   /// No description provided for @loadingFuse.
   ///
   /// In it, this message translates to:
   /// **'Caricamento miccia'**
   String get loadingFuse;
+
+  /// No description provided for @sistemaInnescoPronto.
+  ///
+  /// In it, this message translates to:
+  /// **'Sistema innesco pronto'**
+  String get sistemaInnescoPronto;
+
+  /// No description provided for @splashTagline.
+  ///
+  /// In it, this message translates to:
+  /// **'Passala prima che esploda!'**
+  String get splashTagline;
+
+  /// No description provided for @edition.
+  ///
+  /// In it, this message translates to:
+  /// **'Edition'**
+  String get edition;
+
+  /// No description provided for @passAndPlayPill.
+  ///
+  /// In it, this message translates to:
+  /// **'Pass-and-play da tavolo'**
+  String get passAndPlayPill;
+
+  /// No description provided for @paroleSottoPressione.
+  ///
+  /// In it, this message translates to:
+  /// **'Parole sotto pressione.'**
+  String get paroleSottoPressione;
+
+  /// No description provided for @chiHaLaBomba.
+  ///
+  /// In it, this message translates to:
+  /// **'Chi ha la bomba perde.'**
+  String get chiHaLaBomba;
+
+  /// No description provided for @giocaSubito.
+  ///
+  /// In it, this message translates to:
+  /// **'Gioca subito'**
+  String get giocaSubito;
+
+  /// No description provided for @regole.
+  ///
+  /// In it, this message translates to:
+  /// **'Regole'**
+  String get regole;
+
+  /// No description provided for @setup.
+  ///
+  /// In it, this message translates to:
+  /// **'Setup'**
+  String get setup;
+
+  /// No description provided for @multiplayerStatus.
+  ///
+  /// In it, this message translates to:
+  /// **'Multiplayer offline fino a 20 giocatori • 1 solo smartphone'**
+  String get multiplayerStatus;
+
+  /// No description provided for @comeSiGioca.
+  ///
+  /// In it, this message translates to:
+  /// **'Come si gioca'**
+  String get comeSiGioca;
+
+  /// No description provided for @guidaRapida.
+  ///
+  /// In it, this message translates to:
+  /// **'Guida rapida'**
+  String get guidaRapida;
+
+  /// No description provided for @regoleEssenziali.
+  ///
+  /// In it, this message translates to:
+  /// **'Regole essenziali in 3 semplici mosse.'**
+  String get regoleEssenziali;
+
+  /// No description provided for @zeroAttese.
+  ///
+  /// In it, this message translates to:
+  /// **'Zero attese'**
+  String get zeroAttese;
+
+  /// No description provided for @timerSegreto.
+  ///
+  /// In it, this message translates to:
+  /// **'Timer segreto'**
+  String get timerSegreto;
+
+  /// No description provided for @giocatoriRange.
+  ///
+  /// In it, this message translates to:
+  /// **'2-20 giocatori'**
+  String get giocatoriRange;
+
+  /// No description provided for @sceglieIlMazzo.
+  ///
+  /// In it, this message translates to:
+  /// **'Scegli il mazzo'**
+  String get sceglieIlMazzo;
+
+  /// No description provided for @mazzoTesto.
+  ///
+  /// In it, this message translates to:
+  /// **'Attiva uno o più argomenti. La prontezza verbale farà la differenza.'**
+  String get mazzoTesto;
+
+  /// No description provided for @pronunciaEPassa.
+  ///
+  /// In it, this message translates to:
+  /// **'Pronuncia e passa'**
+  String get pronunciaEPassa;
+
+  /// No description provided for @pronunciaTesto.
+  ///
+  /// In it, this message translates to:
+  /// **'Di\' a voce alta una parola pertinente e passa immediatamente lo smartphone al giocatore successivo.'**
+  String get pronunciaTesto;
+
+  /// No description provided for @detonazioneSorpresa.
+  ///
+  /// In it, this message translates to:
+  /// **'Detonazione a sorpresa'**
+  String get detonazioneSorpresa;
+
+  /// No description provided for @detonazioneTesto.
+  ///
+  /// In it, this message translates to:
+  /// **'Il timer è segreto e imprevedibile (tra 15 e 60 secondi). Chi ha in mano il telefono al'**
+  String get detonazioneTesto;
+
+  /// No description provided for @detonazioneTestoFinale.
+  ///
+  /// In it, this message translates to:
+  /// **'perde la manche.'**
+  String get detonazioneTestoFinale;
+
+  /// No description provided for @regolaDoro.
+  ///
+  /// In it, this message translates to:
+  /// **'Regola d\'oro'**
+  String get regolaDoro;
+
+  /// No description provided for @regolaDoroTesto.
+  ///
+  /// In it, this message translates to:
+  /// **'Niente ripetizioni nello stesso round e zero esitazioni.'**
+  String get regolaDoroTesto;
+
+  /// No description provided for @hoCapitoIniziamo.
+  ///
+  /// In it, this message translates to:
+  /// **'Ho capito, iniziamo!'**
+  String get hoCapitoIniziamo;
+
+  /// No description provided for @tempoStimatoRound.
+  ///
+  /// In it, this message translates to:
+  /// **'Tempo stimato per round: ~45s'**
+  String get tempoStimatoRound;
+
+  /// No description provided for @navLobby.
+  ///
+  /// In it, this message translates to:
+  /// **'Lobby'**
+  String get navLobby;
+
+  /// No description provided for @navRooms.
+  ///
+  /// In it, this message translates to:
+  /// **'Rooms'**
+  String get navRooms;
+
+  /// No description provided for @navVault.
+  ///
+  /// In it, this message translates to:
+  /// **'Vault'**
+  String get navVault;
+
+  /// No description provided for @navConfig.
+  ///
+  /// In it, this message translates to:
+  /// **'Config'**
+  String get navConfig;
 }
 
 class _AppLocalizationsDelegate

@@ -1,21 +1,15 @@
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ticboom/core/routing/app_route.dart';
 import 'package:ticboom/core/utils/app_key_store.dart';
 
+/// Controller della home menu: audio persistito (isMuted) e navigazione
+/// delle CTA.
 class HomeController extends GetxController {
-  static const double _tiltDegrees = 3;
-
+  /// Stato audio persistito su SharedPreferences (AppKeyStore.soundFxMuted).
   final isMuted = false.obs;
-
-  /// Inclinazione in gradi della mascotte durante il bounce.
-  final mascotTilt = 0.0.obs;
-
-  /// Scala della mascotte durante il bounce (squishy effect).
-  final mascotScale = 1.0.obs;
-
-  bool _isBouncing = false;
 
   @override
   void onInit() {
@@ -34,30 +28,18 @@ class HomeController extends GetxController {
     await preferences.setBool(AppKeyStore.soundFxMuted, isMuted.value);
   }
 
-  /// Sequenza di bounce della mascotte: rotate -3° → +3° → reset.
-  Future<void> mascotBounce() async {
-    if (_isBouncing) {
-      return;
-    }
-    _isBouncing = true;
+  /// CTA principale: naviga alla feature party rooms.
+  void goPlay() => Get.find<GoRouter>().go(AppRoute.partyRooms.path);
 
-    mascotTilt.value = -_tiltDegrees;
-    mascotScale.value = 1.05;
-    await Future<void>.delayed(const Duration(milliseconds: 150));
-
-    mascotTilt.value = _tiltDegrees;
-    await Future<void>.delayed(const Duration(milliseconds: 150));
-
-    mascotTilt.value = 0;
-    mascotScale.value = 1.0;
-    _isBouncing = false;
-  }
-
-  void goSetup() => Get.find<GoRouter>().go(AppRoute.gameConfig.path);
-
-  void goRules() => Get.find<GoRouter>().go(AppRoute.howToPlayRules.path);
-
+  /// Card secondaria "Setup": naviga alle impostazioni app.
   void goSettings() => Get.find<GoRouter>().go(AppRoute.gameSettings.path);
+
+  /// Card secondaria "Regole": naviga alla pagina "Come si gioca"
+  /// (haptic ~10ms, come nel riferimento JS).
+  void goRules() {
+    HapticFeedback.lightImpact();
+    Get.find<GoRouter>().go(AppRoute.howToPlayRules.path);
+  }
 
   void goProfile() => Get.find<GoRouter>().go(AppRoute.profile.path);
 }

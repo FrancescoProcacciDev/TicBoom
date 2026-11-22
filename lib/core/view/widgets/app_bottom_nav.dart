@@ -1,4 +1,4 @@
-import 'dart:ui';
+import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -7,8 +7,9 @@ import 'package:ticboom/core/styles/app_colors.dart';
 import 'package:ticboom/core/styles/app_text_styles.dart';
 import 'package:ticboom/l10n/app_localizations.dart';
 
-/// Bottom nav fissa traslucida del design reference: Party / Setup / Rules /
-/// Settings, con voce attiva gialla evidenziata in base alla rotta corrente.
+/// Bottom nav fissa traslucida del design reference minimale: Lobby / Config,
+/// voce attiva colorata (solo colore, senza scale),
+/// contenuta in larghezza (max-w-md) e centrata.
 class AppBottomNav extends StatelessWidget {
   const AppBottomNav({super.key});
 
@@ -19,56 +20,56 @@ class AppBottomNav extends StatelessWidget {
 
     final items = <_BottomNavItem>[
       _BottomNavItem(
-        label: l10n.navParty,
-        icon: Icons.sports_esports,
+        label: l10n.navLobby,
+        icon: Icons.dashboard,
         path: AppRoute.home.path,
       ),
       _BottomNavItem(
-        label: l10n.navSetup,
+        label: l10n.navConfig,
         icon: Icons.tune,
-        path: AppRoute.gameConfig.path,
-      ),
-      _BottomNavItem(
-        label: l10n.navRules,
-        icon: Icons.help_center,
-        path: AppRoute.howToPlayRules.path,
-      ),
-      _BottomNavItem(
-        label: l10n.navSettings,
-        icon: Icons.settings,
         path: AppRoute.gameSettings.path,
       ),
     ];
 
     return ClipRect(
       child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
+        filter: ui.ImageFilter.blur(sigmaX: 24, sigmaY: 24),
         child: Container(
           decoration: const BoxDecoration(
-            color: Color(0xD90B0D1C), // surfaceContainerLowest @ 85%
+            color: Color(0xD9121318), // surface @ 85%
             boxShadow: [
               BoxShadow(
-                color: Color(0x33000000), // black @ 20%
-                offset: Offset(0, -4),
-                blurRadius: 16,
+                color: Color(0x40000000), // black @ 25%
+                offset: Offset(0, -1),
+                blurRadius: 12,
               ),
             ],
           ),
           child: SafeArea(
             top: false,
-            child: SizedBox(
-              height: 80,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: items
-                    .map(
-                      (item) => _BottomNavItemView(
-                        item: item,
-                        isActive: currentLocation == item.path,
-                        onTap: () => context.go(item.path),
-                      ),
-                    )
-                    .toList(growable: false),
+            // heightFactor: 1.0 — dentro bottomNavigationBar l'altezza
+            // disponibile non è vincolata: senza questo, Center si espande
+            // fino a riempire l'intero schermo e il Scaffold riduce il body
+            // a altezza zero (schermo nero).
+            child: Center(
+              heightFactor: 1.0,
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 448),
+                child: SizedBox(
+                  height: 64,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: items
+                        .map(
+                          (item) => _BottomNavItemView(
+                            item: item,
+                            isActive: currentLocation == item.path,
+                            onTap: () => context.go(item.path),
+                          ),
+                        )
+                        .toList(growable: false),
+                  ),
+                ),
               ),
             ),
           ),
@@ -103,30 +104,31 @@ class _BottomNavItemView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = isActive ? AppColors.primaryContainer : AppColors.onSurfaceVariant;
+    // Voce attiva: solo cambio colore (primary-container), senza scale.
+    final color = isActive
+        ? AppColors.primaryContainer
+        : AppColors.onSurfaceVariant;
 
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: onTap,
-      child: AnimatedScale(
-        scale: isActive ? 1.05 : 1.0,
-        duration: const Duration(milliseconds: 200),
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(minWidth: 56, minHeight: 44),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(item.icon, size: 24, color: color),
-              const SizedBox(height: 4),
-              Text(
-                item.label,
-                style: AppTextStyles.labelPill.copyWith(
-                  color: color,
-                  fontWeight: isActive ? FontWeight.w700 : FontWeight.w600,
-                ),
+      child: SizedBox(
+        width: 64,
+        height: 64,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(item.icon, size: 22, color: color),
+            const SizedBox(height: 2),
+            Text(
+              item.label.toUpperCase(),
+              style: AppTextStyles.labelMono.copyWith(
+                fontSize: 9,
+                letterSpacing: 1.0,
+                color: color,
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

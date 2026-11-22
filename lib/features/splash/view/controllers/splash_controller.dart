@@ -15,11 +15,10 @@ import 'package:ticboom/l10n/app_localizations.dart';
 ///
 /// La barra non è un timer finto: il progresso sale solo quando un task di
 /// avvio vero viene completato (pesi: prefs ~15%, logo asset ~35%, l10n ~20%,
-/// warm-up + buffer ~30%). La navigazione verso la home avviene SOLO quando
-/// tutti i task sono terminati (anche in errore: si logga e si prosegue,
-/// mai bloccare l'utente su una splash rotta) E la durata minima di visibilità
-/// del brand (~2,5s) è rispettata. Un timeout di sicurezza (5s) porta comunque
-/// a home se qualcosa si blocca.
+/// warm-up + buffer ~30%). Terminati tutti i task reali — e rispettata la
+/// durata minima di visibilità — la navigazione verso la home parte
+/// AUTOMATICAMENTE (una sola volta, guard anti doppio nav). Un timeout di
+/// sicurezza (5s) porta comunque a home se qualcosa si blocca.
 class SplashController extends GetxController {
   /// Durata minima di visibilità della splash (brand visibility), combinata
   /// col tempo reale dei task: se i task finiscono prima, il residuo è solo
@@ -29,42 +28,29 @@ class SplashController extends GetxController {
   /// Timeout di sicurezza complessivo: dopo 5s si va comunque a home.
   static const Duration _safetyTimeout = Duration(seconds: 5);
 
-  /// Ciclo dei puntini di caricamento (400ms nel riferimento HTML).
-  static const Duration _dotsTick = Duration(milliseconds: 400);
-
   /// Percentuale mostrata al completamento di ciascun task:
   /// prefs 15% → logo 50% → l10n 70% → warm-up/buffer 100%.
   static const List<int> _stepPercents = [15, 50, 70, 100];
-
-  /// Frame iniziale dei puntini ('...', come nel markup HTML).
-  static const int _startDotFrame = 2;
-  static const int _dotFrameCount = 4;
 
   /// Percentuale corrente della miccia (0-100), aggornata per step
   /// COMPLETATO (mai a tick arbitrari). Le transizioni visive sono smussate
   /// dal TweenAnimationBuilder nella pagina.
   final percent = 0.obs;
 
-  /// Indice del frame dei puntini corrente.
-  final dotFrame = _startDotFrame.obs;
-
   bool _navigated = false;
   late final DateTime _startedAt;
-  Timer? _dotsTimer;
   Timer? _safetyTimer;
 
   @override
   void onInit() {
     super.onInit();
     _startedAt = DateTime.now();
-    _startDots();
     _safetyTimer = Timer(_safetyTimeout, goHome);
     unawaited(_runStartupTasks());
   }
 
   @override
   void onClose() {
-    _dotsTimer?.cancel();
     _safetyTimer?.cancel();
     super.onClose();
   }
@@ -104,6 +90,8 @@ class SplashController extends GetxController {
     }
     percent.value = _stepPercents[3];
 
+    // Caricamento reale COMPLETATO: auto-navigazione verso la home, una
+    // sola volta (goHome contiene il guard anti doppio nav).
     goHome();
   }
 
@@ -203,16 +191,12 @@ class SplashController extends GetxController {
     debugPrint('$stackTrace');
   }
 
-  /// Ciclo dei puntini: '.', '..', '...', '' (400ms, come nel riferimento).
-  void _startDots() {
-    _dotsTimer = Timer.periodic(_dotsTick, (timer) {
-      dotFrame.value = (dotFrame.value + 1) % _dotFrameCount;
-    });
-  }
+  /// Ciclo dei puntini rimosso: la pill top del nuovo design contiene solo
+  /// un puntino "ping" animato, senza testo e senza frame ellipsis.
 
   /// Naviga verso la home una sola volta (guard anti doppio nav), chiamata
-  /// solo dopo che tutti i task sono terminati e la durata minima è
-  /// rispettata, oppure dal timeout di sicurezza.
+  /// automaticamente a caricamento reale completato oppure dal timeout di
+  /// sicurezza.
   void goHome() {
     if (_navigated) {
       return;
