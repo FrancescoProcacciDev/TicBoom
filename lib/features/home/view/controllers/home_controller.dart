@@ -1,32 +1,17 @@
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:ticboom/core/game/sound_fx_service.dart';
 import 'package:ticboom/core/routing/app_route.dart';
-import 'package:ticboom/core/utils/app_key_store.dart';
 
-/// Controller della home menu: audio persistito (isMuted) e navigazione
-/// delle CTA.
+/// Controller della home menu: navigazione delle CTA e stato audio.
+/// Il mute è gestito da SoundFxService (unica fonte di verità, condivisa
+/// con il toggle dell'header di partita).
 class HomeController extends GetxController {
-  /// Stato audio persistito su SharedPreferences (AppKeyStore.soundFxMuted).
-  final isMuted = false.obs;
+  /// Stato audio persistito, delegato a SoundFxService.
+  RxBool get isMuted => Get.find<SoundFxService>().isMuted;
 
-  @override
-  void onInit() {
-    super.onInit();
-    _loadSoundFxMuted();
-  }
-
-  Future<void> _loadSoundFxMuted() async {
-    final preferences = Get.find<SharedPreferences>();
-    isMuted.value = preferences.getBool(AppKeyStore.soundFxMuted) ?? false;
-  }
-
-  Future<void> toggleSoundFx() async {
-    isMuted.value = !isMuted.value;
-    final preferences = Get.find<SharedPreferences>();
-    await preferences.setBool(AppKeyStore.soundFxMuted, isMuted.value);
-  }
+  Future<void> toggleSoundFx() => Get.find<SoundFxService>().toggleSoundFx();
 
   /// CTA principale: naviga alla configurazione della partita.
   void goPlay() => Get.find<GoRouter>().go(AppRoute.gameConfig.path);
