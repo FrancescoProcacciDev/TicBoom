@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:ticboom/core/bindings/core_bindings.dart';
 import 'package:ticboom/core/config/app_config.dart';
+import 'package:ticboom/core/questions/data/questions_asset_loader.dart';
 import 'package:ticboom/core/styles/app_base_theme.dart';
 import 'package:ticboom/core/utils/app_key_store.dart';
 import 'package:ticboom/core/view/controllers/theme_controller.dart';
@@ -12,6 +13,7 @@ import 'package:ticboom/l10n/app_localizations.dart';
 
 Future<void> bootstrapApp({required AppConfig config}) async {
   final preferences = await SharedPreferences.getInstance();
+  final builtInQuestions = await QuestionsAssetLoader.load();
 
   // ONBOARDING TEMPORANEAMENTE BYPASSATO: rimuovere per riattivare.
   // Scrive la stessa chiave usata dall'onboarding feature
@@ -20,7 +22,11 @@ Future<void> bootstrapApp({required AppConfig config}) async {
   // redirectOnboardingGuard lascia passare direttamente alla home.
   await preferences.setBool(AppKeyStore.onboardingAccepted, true);
 
-  CoreBindings(config: config, preferences: preferences).dependencies();
+  CoreBindings(
+    config: config,
+    preferences: preferences,
+    builtInQuestions: builtInQuestions,
+  ).dependencies();
 
   runApp(const TicboomApp());
 }

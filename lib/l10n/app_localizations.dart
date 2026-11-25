@@ -362,6 +362,12 @@ abstract class AppLocalizations {
   /// **'Deseleziona tutte'**
   String get deselezionaTutte;
 
+  /// No description provided for @categoriaCasuale.
+  ///
+  /// In it, this message translates to:
+  /// **'Categoria casuale'**
+  String get categoriaCasuale;
+
   /// No description provided for @categoriaAnimali.
   ///
   /// In it, this message translates to:
@@ -386,10 +392,58 @@ abstract class AppLocalizations {
   /// **'Anime'**
   String get categoriaAnime;
 
+  /// No description provided for @categoriaGeografia.
+  ///
+  /// In it, this message translates to:
+  /// **'Geografia'**
+  String get categoriaGeografia;
+
+  /// No description provided for @categoriaFilmSerieTv.
+  ///
+  /// In it, this message translates to:
+  /// **'Film e serie TV'**
+  String get categoriaFilmSerieTv;
+
+  /// No description provided for @categoriaMusica.
+  ///
+  /// In it, this message translates to:
+  /// **'Musica'**
+  String get categoriaMusica;
+
+  /// No description provided for @categoriaVideogiochi.
+  ///
+  /// In it, this message translates to:
+  /// **'Videogiochi'**
+  String get categoriaVideogiochi;
+
+  /// No description provided for @categoriaVitaQuotidiana.
+  ///
+  /// In it, this message translates to:
+  /// **'Vita quotidiana'**
+  String get categoriaVitaQuotidiana;
+
+  /// No description provided for @categoriaCulturaGenerale.
+  ///
+  /// In it, this message translates to:
+  /// **'Cultura generale'**
+  String get categoriaCulturaGenerale;
+
+  /// No description provided for @categoriaSupereroiFumetti.
+  ///
+  /// In it, this message translates to:
+  /// **'Supereroi e fumetti'**
+  String get categoriaSupereroiFumetti;
+
+  /// No description provided for @categoriaParoleLettere.
+  ///
+  /// In it, this message translates to:
+  /// **'Parole e lettere'**
+  String get categoriaParoleLettere;
+
   /// No description provided for @categoriaPersonalizzata.
   ///
   /// In it, this message translates to:
-  /// **'+ Categoria personalizzata'**
+  /// **'Categoria personalizzata'**
   String get categoriaPersonalizzata;
 
   /// No description provided for @categoriaPersonalizzataDesc.
@@ -397,6 +451,108 @@ abstract class AppLocalizations {
   /// In it, this message translates to:
   /// **'Aggiungi i tuoi lemmi o regole del gruppo'**
   String get categoriaPersonalizzataDesc;
+
+  /// No description provided for @categoriePersonalizzate.
+  ///
+  /// In it, this message translates to:
+  /// **'Categorie personalizzate'**
+  String get categoriePersonalizzate;
+
+  /// No description provided for @modificaCategoriaTitolo.
+  ///
+  /// In it, this message translates to:
+  /// **'Modifica categoria'**
+  String get modificaCategoriaTitolo;
+
+  /// No description provided for @nuovaCategoriaTitolo.
+  ///
+  /// In it, this message translates to:
+  /// **'Nuova categoria'**
+  String get nuovaCategoriaTitolo;
+
+  /// No description provided for @nomeCategoriaLabel.
+  ///
+  /// In it, this message translates to:
+  /// **'Nome categoria'**
+  String get nomeCategoriaLabel;
+
+  /// No description provided for @nomeCategoriaHint.
+  ///
+  /// In it, this message translates to:
+  /// **'Es. Citazioni famose'**
+  String get nomeCategoriaHint;
+
+  /// No description provided for @nomeDuplicato.
+  ///
+  /// In it, this message translates to:
+  /// **'Esiste già una categoria con questo nome'**
+  String get nomeDuplicato;
+
+  /// No description provided for @domandeCategoria.
+  ///
+  /// In it, this message translates to:
+  /// **'Domande'**
+  String get domandeCategoria;
+
+  /// No description provided for @domandaHint.
+  ///
+  /// In it, this message translates to:
+  /// **'Es. Cose che trovi in spiaggia'**
+  String get domandaHint;
+
+  /// No description provided for @aggiungiDomanda.
+  ///
+  /// In it, this message translates to:
+  /// **'Aggiungi domanda'**
+  String get aggiungiDomanda;
+
+  /// No description provided for @eliminaDomanda.
+  ///
+  /// In it, this message translates to:
+  /// **'Elimina domanda'**
+  String get eliminaDomanda;
+
+  /// No description provided for @salvaCategoria.
+  ///
+  /// In it, this message translates to:
+  /// **'Salva categoria'**
+  String get salvaCategoria;
+
+  /// No description provided for @categoriaSalvata.
+  ///
+  /// In it, this message translates to:
+  /// **'Categoria aggiunta!'**
+  String get categoriaSalvata;
+
+  /// No description provided for @categoriaEliminata.
+  ///
+  /// In it, this message translates to:
+  /// **'Categoria eliminata!'**
+  String get categoriaEliminata;
+
+  /// No description provided for @eliminaCategoriaTitolo.
+  ///
+  /// In it, this message translates to:
+  /// **'Eliminare la categoria?'**
+  String get eliminaCategoriaTitolo;
+
+  /// No description provided for @eliminaCategoriaTesto.
+  ///
+  /// In it, this message translates to:
+  /// **'\"{name}\" verrà rimossa insieme alle sue domande.'**
+  String eliminaCategoriaTesto(String name);
+
+  /// No description provided for @eliminaCategoriaConferma.
+  ///
+  /// In it, this message translates to:
+  /// **'Elimina'**
+  String get eliminaCategoriaConferma;
+
+  /// No description provided for @eliminaCategoriaAnnulla.
+  ///
+  /// In it, this message translates to:
+  /// **'Annulla'**
+  String get eliminaCategoriaAnnulla;
 
   /// No description provided for @detonatoreCasuale.
   ///
@@ -415,12 +571,6 @@ abstract class AppLocalizations {
   /// In it, this message translates to:
   /// **'INIZIA PARTITA'**
   String get iniziaPartita;
-
-  /// No description provided for @attive.
-  ///
-  /// In it, this message translates to:
-  /// **'attive'**
-  String get attive;
 
   /// No description provided for @partitaInCorsoTitle.
   ///

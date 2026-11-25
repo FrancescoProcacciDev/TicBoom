@@ -4,6 +4,7 @@ enum AppRoute {
   home('/home'),
   profile('/profile'),
   gameConfig('/game-config'),
+  customCategory('/custom-category'),
   gamePlay('/game-play'),
   gameOver('/game-over'),
   howToPlayRules('/how-to-play-rules'),

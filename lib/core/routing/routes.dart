@@ -15,6 +15,7 @@ import 'package:ticboom/features/profile/view/pages/profile_page.dart';
 import 'package:ticboom/features/rules/view/bindings/rules_bindings.dart';
 import 'package:ticboom/features/rules/view/pages/rules_page.dart';
 import 'package:ticboom/features/settings/view/pages/settings_page.dart';
+import 'package:ticboom/features/setup/view/pages/custom_category_page.dart';
 import 'package:ticboom/features/setup/view/pages/setup_page.dart';
 import 'package:ticboom/features/setup/view/bindings/setup_bindings.dart';
 import 'package:ticboom/features/splash/view/bindings/splash_bindings.dart';
@@ -68,6 +69,19 @@ GoRouter buildRootRouter() {
         pageBuilder: (context, state) {
           const SetupBindings().dependencies();
           return const MaterialPage(child: SetupPage());
+        },
+      ),
+      GoRoute(
+        path: AppRoute.customCategory.path,
+        name: AppRoute.customCategory.name,
+        pageBuilder: (context, state) {
+          // Nessun binding: il CustomCategoryController è registrato e
+          // smaltito dal ciclo di vita della pagina stessa (initState/dispose).
+          // `extra` = nome della categoria da modificare (assente: creazione).
+          final nomeModifica = state.extra as String?;
+          return MaterialPage(
+            child: CustomCategoryPage(editName: nomeModifica),
+          );
         },
       ),
       GoRoute(

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ticboom/core/game/category_style.dart';
 import 'package:ticboom/core/game/sound_fx_service.dart';
 import 'package:ticboom/core/styles/app_colors.dart';
 import 'package:ticboom/core/styles/app_text_styles.dart';
@@ -208,6 +209,14 @@ class _GamePlayPageState extends State<GamePlayPage> {
       'CIBO E BEVANDE' => l10n.categoriaCiboBevande,
       'CALCIO' => l10n.categoriaCalcio,
       'ANIME' => l10n.categoriaAnime,
+      'GEOGRAFIA' => l10n.categoriaGeografia,
+      'FILM E SERIE TV' => l10n.categoriaFilmSerieTv,
+      'MUSICA' => l10n.categoriaMusica,
+      'VIDEOGIOCHI' => l10n.categoriaVideogiochi,
+      'VITA QUOTIDIANA' => l10n.categoriaVitaQuotidiana,
+      'CULTURA GENERALE' => l10n.categoriaCulturaGenerale,
+      'SUPEREROI E FUMETTI' => l10n.categoriaSupereroiFumetti,
+      'PAROLE E LETTERE' => l10n.categoriaParoleLettere,
       _ => categoria,
     };
   }
@@ -227,15 +236,11 @@ class _GamePlayPageState extends State<GamePlayPage> {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         title: Text(
           l10n.abbandonoTitolo,
-          style: AppTextStyles.titleCard.copyWith(
-            color: AppColors.onSurface,
-          ),
+          style: AppTextStyles.titleCard.copyWith(color: AppColors.onSurface),
         ),
         content: Text(
           l10n.abbandonoTesto,
-          style: AppTextStyles.body.copyWith(
-            color: AppColors.onSurfaceVariant,
-          ),
+          style: AppTextStyles.body.copyWith(color: AppColors.onSurfaceVariant),
         ),
         actions: [
           TextButton(
@@ -299,20 +304,16 @@ class _Header extends StatelessWidget {
           // Toggle mute di partita: condivisa con la home la chiave
           // persistita (SoundFxService); il ticchettio si ferma/riparte
           // subito grazie all'osservatore del controller.
-          Obx(
-            () {
-              final soundFx = Get.find<SoundFxService>();
-              return IconButton(
-                onPressed: soundFx.toggleSoundFx,
-                icon: Icon(
-                  soundFx.isMuted.value
-                      ? Icons.volume_off
-                      : Icons.volume_up,
-                ),
-                color: AppColors.onSurfaceVariant,
-              );
-            },
-          ),
+          Obx(() {
+            final soundFx = Get.find<SoundFxService>();
+            return IconButton(
+              onPressed: soundFx.toggleSoundFx,
+              icon: Icon(
+                soundFx.isMuted.value ? Icons.volume_off : Icons.volume_up,
+              ),
+              color: AppColors.onSurfaceVariant,
+            );
+          }),
         ],
       ),
     );
@@ -329,13 +330,6 @@ class _CategoryChip extends StatelessWidget {
   final String categoria;
   final String label;
 
-  static const Map<String, IconData> _icons = {
-    'ANIMALI': Icons.pets,
-    'CIBO E BEVANDE': Icons.restaurant,
-    'CALCIO': Icons.sports_soccer,
-    'ANIME': Icons.auto_awesome,
-  };
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -349,7 +343,7 @@ class _CategoryChip extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(
-            _icons[categoria] ?? Icons.category,
+            CategoryStyle.iconFor(categoria),
             size: 16,
             color: AppColors.primaryContainer,
           ),

@@ -6,6 +6,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ticboom/core/config/app_config.dart';
 import 'package:ticboom/core/game/game_service.dart';
 import 'package:ticboom/core/game/sound_fx_service.dart';
+import 'package:ticboom/core/questions/data/repo_impl/questions_repository_impl.dart';
+import 'package:ticboom/core/questions/domain/repositories/questions_repository.dart';
 import 'package:ticboom/core/routing/routes.dart' as root_routes;
 import 'package:ticboom/core/routing/shell_routes.dart' as shell_routes;
 import 'package:ticboom/core/view/controllers/theme_controller.dart';
@@ -23,17 +25,29 @@ class CoreBindings implements Bindings {
   const CoreBindings({
     required this.config,
     required this.preferences,
+    required this.builtInQuestions,
   });
 
   final AppConfig config;
   final SharedPreferences preferences;
+  final Map<String, List<String>> builtInQuestions;
 
   @override
   void dependencies() {
     Get.put<AppConfig>(config, permanent: true);
     Get.put<SharedPreferences>(preferences, permanent: true);
     Get.put<Dio>(provideDio(appConfig: config), permanent: true);
-    Get.put<GameService>(GameService(), permanent: true);
+    Get.put<QuestionsRepository>(
+      QuestionsRepositoryImpl(
+        builtInQuestions: builtInQuestions,
+        preferences: preferences,
+      ),
+      permanent: true,
+    );
+    Get.put<GameService>(
+      GameService(questionsRepository: Get.find<QuestionsRepository>()),
+      permanent: true,
+    );
     Get.put<SoundFxService>(SoundFxService(), permanent: true);
     Get.put<ThemeRepository>(
       ThemeRepositorySharedPrefsImpl(preferences),

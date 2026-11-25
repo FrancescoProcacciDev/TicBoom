@@ -150,6 +150,9 @@ class AppLocalizationsIt extends AppLocalizations {
   String get deselezionaTutte => 'Deseleziona tutte';
 
   @override
+  String get categoriaCasuale => 'Categoria casuale';
+
+  @override
   String get categoriaAnimali => 'Animali';
 
   @override
@@ -162,11 +165,88 @@ class AppLocalizationsIt extends AppLocalizations {
   String get categoriaAnime => 'Anime';
 
   @override
-  String get categoriaPersonalizzata => '+ Categoria personalizzata';
+  String get categoriaGeografia => 'Geografia';
+
+  @override
+  String get categoriaFilmSerieTv => 'Film e serie TV';
+
+  @override
+  String get categoriaMusica => 'Musica';
+
+  @override
+  String get categoriaVideogiochi => 'Videogiochi';
+
+  @override
+  String get categoriaVitaQuotidiana => 'Vita quotidiana';
+
+  @override
+  String get categoriaCulturaGenerale => 'Cultura generale';
+
+  @override
+  String get categoriaSupereroiFumetti => 'Supereroi e fumetti';
+
+  @override
+  String get categoriaParoleLettere => 'Parole e lettere';
+
+  @override
+  String get categoriaPersonalizzata => 'Categoria personalizzata';
 
   @override
   String get categoriaPersonalizzataDesc =>
       'Aggiungi i tuoi lemmi o regole del gruppo';
+
+  @override
+  String get categoriePersonalizzate => 'Categorie personalizzate';
+
+  @override
+  String get modificaCategoriaTitolo => 'Modifica categoria';
+
+  @override
+  String get nuovaCategoriaTitolo => 'Nuova categoria';
+
+  @override
+  String get nomeCategoriaLabel => 'Nome categoria';
+
+  @override
+  String get nomeCategoriaHint => 'Es. Citazioni famose';
+
+  @override
+  String get nomeDuplicato => 'Esiste già una categoria con questo nome';
+
+  @override
+  String get domandeCategoria => 'Domande';
+
+  @override
+  String get domandaHint => 'Es. Cose che trovi in spiaggia';
+
+  @override
+  String get aggiungiDomanda => 'Aggiungi domanda';
+
+  @override
+  String get eliminaDomanda => 'Elimina domanda';
+
+  @override
+  String get salvaCategoria => 'Salva categoria';
+
+  @override
+  String get categoriaSalvata => 'Categoria aggiunta!';
+
+  @override
+  String get categoriaEliminata => 'Categoria eliminata!';
+
+  @override
+  String get eliminaCategoriaTitolo => 'Eliminare la categoria?';
+
+  @override
+  String eliminaCategoriaTesto(String name) {
+    return '\"$name\" verrà rimossa insieme alle sue domande.';
+  }
+
+  @override
+  String get eliminaCategoriaConferma => 'Elimina';
+
+  @override
+  String get eliminaCategoriaAnnulla => 'Annulla';
 
   @override
   String get detonatoreCasuale => 'Detonatore casuale';
@@ -177,9 +257,6 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get iniziaPartita => 'INIZIA PARTITA';
-
-  @override
-  String get attive => 'attive';
 
   @override
   String get partitaInCorsoTitle => 'DETONAZIONE IN CORSO';
