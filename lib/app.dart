@@ -1,3 +1,5 @@
+import 'dart:ui' show PlatformDispatcher;
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
@@ -13,7 +15,9 @@ import 'package:ticboom/l10n/app_localizations.dart';
 
 Future<void> bootstrapApp({required AppConfig config}) async {
   final preferences = await SharedPreferences.getInstance();
-  final builtInQuestions = await QuestionsAssetLoader.load();
+  final builtInQuestions = await QuestionsAssetLoader.load(
+    languageCode: _risolviLinguaDomandi(),
+  );
 
   // ONBOARDING TEMPORANEAMENTE BYPASSATO: rimuovere per riattivare.
   // Scrive la stessa chiave usata dall'onboarding feature
@@ -29,6 +33,18 @@ Future<void> bootstrapApp({required AppConfig config}) async {
   ).dependencies();
 
   runApp(const TicboomApp());
+}
+
+/// Lingua delle domande built-in: segue la lingua del dispositivo,
+/// risolta sulle lingue supportate dall'app (fallback: la prima, inglese).
+String _risolviLinguaDomandi() {
+  final codice = PlatformDispatcher.instance.locale.languageCode;
+  final supportata = AppLocalizations.supportedLocales.any(
+    (locale) => locale.languageCode == codice,
+  );
+  return supportata
+      ? codice
+      : AppLocalizations.supportedLocales.first.languageCode;
 }
 
 class TicboomApp extends StatelessWidget {
