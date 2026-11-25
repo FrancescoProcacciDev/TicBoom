@@ -38,6 +38,15 @@ class SoundFxService extends GetxService {
     await player.play(AssetSource('sounds/tic_tac_4.mp3'));
   }
 
+  /// Contesto del solo boom: nessuna richiesta di audio focus, così il boom
+  /// non mette in pausa il tic-tac nella stessa app (AndroidAudioFocus.none
+  /// su Android; su iOS il contesto è globale per app e mixWithOthers serve
+  /// solo a non interrompere le altre app). Configurazione raccomandata dal
+  /// maintainer di audioplayers (AudioContextConfigFocus.mixWithOthers =>
+  /// AndroidAudioFocus.none).
+  AudioContext get _boomAudioContext =>
+      AudioContextConfig(focus: AudioContextConfigFocus.mixWithOthers).build();
+
   /// Prepara in anticipo il player del boom: carica e decodifica l'asset una
   /// volta, così all'esplosione il suono parte senza latenza di caricamento.
   /// Inerte se muto: la preparazione avviene al momento dell'unmute.
@@ -53,6 +62,9 @@ class SoundFxService extends GetxService {
     }
     final player = AudioPlayer();
     _boomPlayer = player;
+    // Il contesto va impostato prima di setSource/resume per essere
+    // efficace fin dall'avvio della riproduzione.
+    await player.setAudioContext(_boomAudioContext);
     await player.setSource(AssetSource('sounds/explosion.mp3'));
     // TODO(log-timing): log temporaneo di diagnostica latenza, da rimuovere.
     debugPrint(
@@ -64,7 +76,7 @@ class SoundFxService extends GetxService {
   /// breve margine: il ticchettio copre la latenza di avvio del boom e il
   /// botto a pieno volume lo inghiotte, così non c'è silenzio tra i due.
   /// Il tick viene solo fermato ([_pauseTick]), senza dispose: il rilascio
-  /// del MediaPlayer avviene poi in [startTickLoop] (avvio della prossima
+  /// del MediaPlayer avviene poi in [startTick] (avvio della prossima
   /// partita), [toggleSoundFx], [onClose] e in caso di abbandono
   /// ([stopTick]), tutti fuori dal percorso critico.
   /// Se muto non c'è alcun suono: solo la fermata immediata del tick.
@@ -88,6 +100,7 @@ class SoundFxService extends GetxService {
     } else {
       final fallback = AudioPlayer();
       _boomPlayer = fallback;
+      await fallback.setAudioContext(_boomAudioContext);
       await fallback.play(AssetSource('sounds/explosion.mp3'));
       debugPrint(
         '[boom] fallback play done ${DateTime.now().millisecondsSinceEpoch}',
@@ -117,7 +130,7 @@ class SoundFxService extends GetxService {
 
   /// Fermata leggera del ticchettio: solo stop, senza dispose. Usata
   /// all'esplosione per tenere il rilascio del MediaPlayer fuori dal
-  /// percorso critico del boom; il dispose avviene poi in [startTickLoop],
+  /// percorso critico del boom; il dispose avviene poi in [startTick],
   /// [toggleSoundFx] e [onClose].
   Future<void> _pauseTick() async {
     final player = _tickPlayer;

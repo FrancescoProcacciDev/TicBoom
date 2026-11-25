@@ -63,13 +63,18 @@ class GamePlayController extends GetxController with WidgetsBindingObserver {
 
   /// Effetti sonori: tic-tac se non muto, sincronizzato con il
   /// toggle del mute (anche quello dell'header di partita). Il boom viene
-  /// preparato in anticipo per partire senza latenza all'esplosione.
+  /// preparato in anticipo per partire senza latenza all'esplosione, e
+  /// PRIMA del tic-tac: su iOS il contesto audio è globale per app e va
+  /// impostato prima che qualunque player inizi a suonare.
   void _startSoundFx() {
     final soundFx = Get.find<SoundFxService>();
-    if (!soundFx.isMuted.value) {
-      soundFx.startTick();
-    }
-    soundFx.prepareExplosion();
+    unawaited(
+      soundFx.prepareExplosion().then((_) {
+        if (!soundFx.isMuted.value) {
+          soundFx.startTick();
+        }
+      }),
+    );
     _muteWorker = ever<bool>(soundFx.isMuted, (muted) {
       if (muted) {
         soundFx.stopTick();
