@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
@@ -10,7 +11,7 @@ import 'package:ticboom/core/routing/app_route.dart';
 
 /// Controller della partita in corso: gestisce il timer segreto della bomba
 /// basato sulla scadenza effettiva ([GameSession.scadenza]), l'esplosione e
-/// gli effetti sonori (tic-tac in loop, boom che lo sostituisce).
+/// gli effetti sonori (tic-tac, boom che lo sostituisce).
 ///
 /// Requisiti chiave:
 /// - un solo timer, mai azzerato né riavviato;
@@ -23,6 +24,7 @@ class GamePlayController extends GetxController with WidgetsBindingObserver {
 
   GameSession? _session;
   Timer? _bombTimer;
+  Timer? _gameOverNavigation;
   bool _isExploded = false;
   Worker? _muteWorker;
 
@@ -59,18 +61,21 @@ class GamePlayController extends GetxController with WidgetsBindingObserver {
     });
   }
 
-  /// Effetti sonori: tic-tac in loop se non muto, sincronizzato con il
-  /// toggle del mute (anche quello dell'header di partita).
+  /// Effetti sonori: tic-tac se non muto, sincronizzato con il
+  /// toggle del mute (anche quello dell'header di partita). Il boom viene
+  /// preparato in anticipo per partire senza latenza all'esplosione.
   void _startSoundFx() {
     final soundFx = Get.find<SoundFxService>();
     if (!soundFx.isMuted.value) {
-      soundFx.startTickLoop();
+      soundFx.startTick();
     }
+    soundFx.prepareExplosion();
     _muteWorker = ever<bool>(soundFx.isMuted, (muted) {
       if (muted) {
         soundFx.stopTick();
       } else if (!_isExploded && _session != null) {
-        soundFx.startTickLoop();
+        soundFx.startTick();
+        soundFx.prepareExplosion();
       }
     });
   }
@@ -85,7 +90,8 @@ class GamePlayController extends GetxController with WidgetsBindingObserver {
   }
 
   /// Esplosione: una sola volta per tutta la vita del controller. Il boom
-  /// prende il posto del ticchettio, poi si naviga alla fine partita.
+  /// parte subito; dopo una breve attesa deliberata (per far percepire il
+  /// boom prima della schermata) si naviga alla fine partita.
   void _explode() {
     if (_isExploded) {
       return;
@@ -93,8 +99,19 @@ class GamePlayController extends GetxController with WidgetsBindingObserver {
     _isExploded = true;
     _bombTimer?.cancel();
     _bombTimer = null;
+    // TODO(log-timing): log temporaneo di diagnostica latenza, da rimuovere.
+    debugPrint(
+      '[boom] explode ${DateTime.now().millisecondsSinceEpoch}',
+    );
     Get.find<SoundFxService>().playExplosion();
-    Get.find<GoRouter>().go(AppRoute.gameOver.path);
+    _gameOverNavigation?.cancel();
+    _gameOverNavigation = Timer(const Duration(milliseconds: 600), () {
+      // TODO(log-timing): log temporaneo di diagnostica latenza, da rimuovere.
+      debugPrint(
+        '[boom] navigate ${DateTime.now().millisecondsSinceEpoch}',
+      );
+      Get.find<GoRouter>().go(AppRoute.gameOver.path);
+    });
   }
 
   /// Ritorno in primo piano: se il tempo è scaduto mentre l'app era in
@@ -122,6 +139,8 @@ class GamePlayController extends GetxController with WidgetsBindingObserver {
   /// termina la sessione e torna alla homepage.
   void abandonGame() {
     _isExploded = true; // impedisce ulteriori esplosioni/navigazioni
+    _gameOverNavigation?.cancel();
+    _gameOverNavigation = null;
     _bombTimer?.cancel();
     _bombTimer = null;
     Get.find<SoundFxService>().stopTick();
@@ -132,6 +151,8 @@ class GamePlayController extends GetxController with WidgetsBindingObserver {
   @override
   void onClose() {
     WidgetsBinding.instance.removeObserver(this);
+    _gameOverNavigation?.cancel();
+    _gameOverNavigation = null;
     _bombTimer?.cancel();
     _bombTimer = null;
     _muteWorker?.dispose();
