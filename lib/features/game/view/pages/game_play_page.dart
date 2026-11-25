@@ -194,7 +194,7 @@ class _GamePlayPageState extends State<GamePlayPage> {
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(24, 8, 24, 16),
-                child: _PassPhoneButton(controller: controller),
+                child: _PassPhoneHint(controller: controller),
               ),
             ],
           ),
@@ -450,47 +450,28 @@ class _TicTacIndicatorState extends State<_TicTacIndicator> {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// CTA "PASSA IL TELEFONO": solo feedback visivo, nessun effetto di gioco
+// Suggerimento statico "Passa il telefono": solo etichetta, nessuna interazione.
 // ─────────────────────────────────────────────────────────────────────────────
 
-class _PassPhoneButton extends StatelessWidget {
-  const _PassPhoneButton({required this.controller});
+class _PassPhoneHint extends StatelessWidget {
+  const _PassPhoneHint({required this.controller});
 
   final GamePlayController controller;
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    return Obx(() {
-      final feedback = controller.passFeedbackActive.value;
-      return AnimatedScale(
-        scale: feedback ? 0.96 : 1.0,
-        duration: const Duration(milliseconds: 150),
-        child: FilledButton(
-          onPressed: controller.passThePhone,
-          style: FilledButton.styleFrom(
-            backgroundColor: AppColors.primaryContainer,
-            foregroundColor: AppColors.onPrimaryContainer,
-            padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 20),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-            ),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Icon(Icons.east),
-              const SizedBox(width: 10),
-              Text(
-                l10n.passaIlTelefono,
-                style: AppTextStyles.labelAction.copyWith(
-                  color: AppColors.onPrimaryContainer,
-                ),
-              ),
-            ],
-          ),
+    final color = Theme.of(context).colorScheme.onSurfaceVariant;
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Icon(Icons.east, color: color, size: 18),
+        const SizedBox(width: 10),
+        Text(
+          l10n.passaIlTelefono,
+          style: AppTextStyles.labelAction.copyWith(color: color),
         ),
-      );
-    });
+      ],
+    );
   }
 }

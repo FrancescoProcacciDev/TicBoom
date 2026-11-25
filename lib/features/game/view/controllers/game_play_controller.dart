@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
@@ -30,10 +29,6 @@ class GamePlayController extends GetxController with WidgetsBindingObserver {
 
   /// Sessione corrente (categoria e domanda fisse per tutta la manche).
   GameSession? get session => _session;
-
-  /// Feedback del pulsante "Passa il telefono" (solo visivo: non tocca
-  /// domanda, categoria, timer né navigazione).
-  final passFeedbackActive = false.obs;
 
   @override
   void onInit() {
@@ -126,18 +121,6 @@ class GamePlayController extends GetxController with WidgetsBindingObserver {
     if (state == AppLifecycleState.resumed) {
       _checkDeadline();
     }
-  }
-
-  /// CTA "Passa il telefono": nessun effetto sul gioco, solo un breve
-  /// feedback visivo.
-  void passThePhone() {
-    if (passFeedbackActive.value) {
-      return;
-    }
-    passFeedbackActive.value = true;
-    Future.delayed(const Duration(milliseconds: 600), () {
-      passFeedbackActive.value = false;
-    });
   }
 
   /// Abbandono confermato dall'utente: interrompe il timer e i suoni,
