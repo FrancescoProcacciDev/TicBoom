@@ -10,8 +10,9 @@ import 'package:ticboom/l10n/app_localizations.dart';
 /// Schermata di partita terminata: mostrata automaticamente dopo
 /// l'esplosione della bomba, con il tempo effettivo trascorso.
 ///
-/// "Gioca nuova partita" riporta alla homepage e ripulisce la sessione;
-/// "Rigiochi subito la manche" resta visibile ma disabilitato.
+/// "Gioca nuova partita" riporta alla configurazione della partita con la
+/// selezione precedente; "Torna alla home" riporta alla homepage e ripulisce
+/// la sessione.
 class GameOverPage extends StatefulWidget {
   const GameOverPage({super.key});
 
@@ -74,9 +75,7 @@ class _GameOverPageState extends State<GameOverPage> {
                     children: [
                       const SizedBox(height: 8),
                       const _ExplosionVector(),
-                      const SizedBox(height: 12),
-                      _ContextChip(l10n: l10n),
-                      const SizedBox(height: 10),
+                      const SizedBox(height: 24),
                       Text(
                         l10n.bombaEsplosaMessaggio,
                         textAlign: TextAlign.center,
@@ -130,7 +129,7 @@ class _Header extends StatelessWidget {
           const SizedBox(width: 4),
           Expanded(
             child: Text(
-              AppLocalizations.of(context).partitaInCorsoTitle,
+              AppLocalizations.of(context).detonazioneConfermata,
               style: AppTextStyles.titleCard.copyWith(
                 color: AppColors.onSurface,
               ),
@@ -395,45 +394,6 @@ class _ExplosionPainter extends CustomPainter {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Chip "Detonazione confermata"
-// ─────────────────────────────────────────────────────────────────────────────
-
-class _ContextChip extends StatelessWidget {
-  const _ContextChip({required this.l10n});
-
-  final AppLocalizations l10n;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-      decoration: BoxDecoration(
-        color: AppColors.surfaceContainerHigh,
-        borderRadius: BorderRadius.circular(999),
-        border: Border.all(color: AppColors.outlineVariant),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const Icon(
-            Icons.local_fire_department,
-            size: 16,
-            color: AppColors.primaryContainer,
-          ),
-          const SizedBox(width: 8),
-          Text(
-            l10n.detonazioneConfermata,
-            style: AppTextStyles.labelMono.copyWith(
-              color: AppColors.primaryContainer,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
 // Card di sconfitta: chi ha il telefono in mano ha perso
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -462,8 +422,7 @@ class _DefeatCard extends StatelessWidget {
               children: [
                 Text(
                   l10n.sconfittaDelRound,
-                  style: AppTextStyles.labelMono.copyWith(
-                    fontSize: 9,
+                  style: AppTextStyles.bodySmall.copyWith(
                     color: AppColors.onSurfaceVariant,
                   ),
                 ),
@@ -518,7 +477,7 @@ class _TimeMetric extends StatelessWidget {
           Expanded(
             child: Text(
               l10n.tempoLabel,
-              style: AppTextStyles.titleSmall.copyWith(
+              style: AppTextStyles.titleCard.copyWith(
                 color: AppColors.onSurfaceVariant,
               ),
             ),
@@ -552,7 +511,7 @@ class _GameOverActions extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         FilledButton(
-          onPressed: controller.goHome,
+          onPressed: controller.goToSetup,
           style: FilledButton.styleFrom(
             backgroundColor: AppColors.primaryContainer,
             foregroundColor: AppColors.onPrimaryContainer,
@@ -562,51 +521,42 @@ class _GameOverActions extends StatelessWidget {
             ),
           ),
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(Icons.arrow_forward),
-              const SizedBox(width: 10),
-              Expanded(
-                child: Text(
-                  l10n.giocaNuovaPartita,
-                  textAlign: TextAlign.center,
-                  style: AppTextStyles.labelAction.copyWith(
-                    color: AppColors.onPrimaryContainer,
-                  ),
+              Text(
+                l10n.giocaNuovaPartita,
+                style: AppTextStyles.labelAction.copyWith(
+                  color: AppColors.onPrimaryContainer,
                 ),
               ),
+              const SizedBox(width: 10),
+              const Icon(Icons.arrow_forward),
             ],
           ),
         ),
         const SizedBox(height: 10),
-        // "Rigiochi subito la manche": visibile ma completamente
-        // disabilitato (nessuna azione in questa versione).
-        Opacity(
-          opacity: 0.4,
-          child: OutlinedButton(
-            onPressed: null,
-            style: OutlinedButton.styleFrom(
-              disabledForegroundColor: AppColors.onSurfaceVariant,
-              side: const BorderSide(color: AppColors.outlineVariant),
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
-              ),
+        OutlinedButton(
+          onPressed: controller.goHome,
+          style: OutlinedButton.styleFrom(
+            disabledForegroundColor: AppColors.onSurfaceVariant,
+            side: const BorderSide(color: AppColors.outlineVariant),
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
             ),
-            child: Row(
-              children: [
-                const Icon(Icons.replay),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: Text(
-                    l10n.rigiochiManche,
-                    textAlign: TextAlign.center,
-                    style: AppTextStyles.buttonSecondary.copyWith(
-                      color: AppColors.onSurfaceVariant,
-                    ),
-                  ),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                l10n.tornaAllaHome,
+                style: AppTextStyles.buttonSecondary.copyWith(
+                  color: AppColors.onSurfaceVariant,
                 ),
-              ],
-            ),
+              ),
+              const SizedBox(width: 10),
+              const Icon(Icons.home),
+            ],
           ),
         ),
       ],

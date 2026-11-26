@@ -58,6 +58,9 @@ class SetupController extends GetxController {
   /// Totale categorie disponibili.
   int get totalCount => categorie.length;
 
+  /// True se tutte le categorie predefinite sono selezionate.
+  bool get allBuiltInSelected => selectedCategories.containsAll(categorieBuiltIn);
+
   /// Categorie built-in (griglia principale, senza le personalizzate).
   List<String> get categorieBuiltIn => [
     ...categorie.where(
@@ -107,8 +110,8 @@ class SetupController extends GetxController {
     }
   }
 
-  /// Seleziona tutte le categorie.
-  void selectAll() => selectedCategories.assignAll(Set.of(categorie));
+  /// Seleziona tutte le categorie predefinite, escluse le personalizzate.
+  void selectAll() => selectedCategories.addAll(Set.of(categorieBuiltIn));
 
   /// Sostituisce la selezione con una sola categoria predefinita a caso
   /// (le personalizzate sono escluse dall'estrazione).
@@ -120,9 +123,9 @@ class SetupController extends GetxController {
     selectedCategories.assignAll({pool[Random().nextInt(pool.length)]});
   }
 
-  /// Deseleziona tutte le categorie (blocca l'avvio finché non se ne
-  /// seleziona almeno una).
-  void deselectAll() => selectedCategories.clear();
+  /// Deseleziona tutte le categorie predefinite, lasciando le
+  /// personalizzate (blocca l'avvio finché non se ne seleziona almeno una).
+  void deselectAll() => selectedCategories.removeAll(categorieBuiltIn);
 
   bool isSelected(String categoria) => selectedCategories.contains(categoria);
 

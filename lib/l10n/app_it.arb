@@ -10,7 +10,7 @@
   "giocaSubito": "Gioca subito",
   "regole": "Regole",
   "setup": "Setup",
-  "multiplayerStatus": "Multiplayer offline fino a 20 giocatori • 1 solo smartphone",
+  "multiplayerStatus": "Party Game, gioca con i tuoi amici • 1 solo smartphone",
   "comeSiGioca": "Come si gioca",
   "guidaRapida": "Guida rapida",
   "regoleEssenziali": "Regole essenziali in 3 semplici mosse.",
@@ -114,5 +114,6 @@
     }
   },
   "giocaNuovaPartita": "GIOCA NUOVA PARTITA",
-  "rigiochiManche": "Rigiochi subito la manche"
+  "rigiochiManche": "Rigiochi subito la manche",
+  "tornaAllaHome": "TORNA ALLA HOME"
 }

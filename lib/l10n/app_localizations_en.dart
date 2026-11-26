@@ -41,7 +41,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get multiplayerStatus =>
-      'Offline multiplayer up to 20 players • 1 single smartphone';
+      'Party game, play with your friends • 1 smartphone only';
 
   @override
   String get comeSiGioca => 'How to play';
@@ -323,4 +323,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get rigiochiManche => 'Replay the round now';
+
+  @override
+  String get tornaAllaHome => 'BACK TO HOME';
 }

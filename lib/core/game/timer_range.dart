@@ -11,6 +11,8 @@ class TimerRange {
 
   /// Range "classico": la bomba esplode tra 45 e 120 secondi.
   static const TimerRange classico = TimerRange(45, 120);
+  // TIMER PER TEST
+  // static const TimerRange classico = TimerRange(3, 3);
 
   /// Range disponibili in configurazione (facilmente estendibile).
   static const List<TimerRange> disponibili = [rapido, classico];

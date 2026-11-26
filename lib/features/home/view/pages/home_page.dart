@@ -452,7 +452,7 @@ class _StatusCard extends StatelessWidget {
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: AppTextStyles.labelMono.copyWith(
-                fontSize: 10,
+                fontSize: 12,
                 letterSpacing: 0.4,
                 color: AppColors.onSurfaceVariant,
               ),

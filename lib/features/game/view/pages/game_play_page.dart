@@ -11,7 +11,8 @@ import 'package:ticboom/features/game/view/controllers/game_play_controller.dart
 import 'package:ticboom/l10n/app_localizations.dart';
 
 /// Schermata di partita in corso: categoria e domanda estratte, bomba con
-/// miccia accesa, indicatore TIC! TAC… e CTA "Passa il telefono".
+/// miccia accesa, indicatore TIC! TAC… e card riepilogo con le istruzioni
+/// per il passaggio dello smartphone.
 ///
 /// Nessun countdown visibile: la durata della bomba resta segreta. Il back
 /// (sistema o freccia) chiede conferma prima di abbandonare la partita.
@@ -100,14 +101,6 @@ class _GamePlayPageState extends State<GamePlayPage> {
                         ),
                       ),
                       const SizedBox(height: 8),
-                      Text(
-                        l10n.rispondiEPassa,
-                        textAlign: TextAlign.center,
-                        style: AppTextStyles.body.copyWith(
-                          color: AppColors.onSurfaceVariant,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
                       const _BurningBombVector(),
                       const SizedBox(height: 8),
                       const _TicTacIndicator(),
@@ -119,82 +112,83 @@ class _GamePlayPageState extends State<GamePlayPage> {
                           borderRadius: BorderRadius.circular(16),
                           border: Border.all(color: AppColors.outlineVariant),
                         ),
-                        child: Row(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Icon(
-                              Icons.smartphone,
-                              size: 20,
-                              color: AppColors.primaryContainer,
-                            ),
-                            const SizedBox(width: 12),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
+                            Row(
+                              children: [
+                                const Icon(
+                                  Icons.smartphone,
+                                  size: 20,
+                                  color: AppColors.primaryContainer,
+                                ),
+                                const SizedBox(width: 12),
+                                Expanded(
+                                  child: Text(
                                     l10n.bombaInMano,
-                                    style: AppTextStyles.titleSmall.copyWith(
+                                    style: AppTextStyles.titleCard.copyWith(
                                       color: AppColors.onSurface,
                                     ),
                                   ),
-                                  const SizedBox(height: 2),
-                                  Text(
-                                    l10n.toccaAChiHaIlTelefono,
-                                    style: AppTextStyles.caption.copyWith(
-                                      color: AppColors.onSurfaceVariant,
+                                ),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 8,
+                                    vertical: 4,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: AppColors.tertiaryContainer
+                                        .withValues(alpha: 0.15),
+                                    borderRadius: BorderRadius.circular(999),
+                                  ),
+                                  child: Text(
+                                    l10n.inGioco,
+                                    style: AppTextStyles.labelMono.copyWith(
+                                      fontSize: 9,
+                                      color: AppColors.tertiaryContainer,
                                     ),
                                   ),
-                                ],
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              l10n.toccaAChiHaIlTelefono,
+                              style: AppTextStyles.bodySmall.copyWith(
+                                color: AppColors.onSurfaceVariant,
                               ),
                             ),
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 8,
-                                vertical: 4,
+                            const SizedBox(height: 4),
+                            Text(
+                              l10n.rispondiEPassa,
+                              style: AppTextStyles.bodyLarge.copyWith(
+                                color: AppColors.onSurfaceVariant,
                               ),
-                              decoration: BoxDecoration(
-                                color: AppColors.tertiaryContainer.withValues(
-                                  alpha: 0.15,
+                            ),
+                            const SizedBox(height: 8),
+                            Row(
+                              children: [
+                                const Icon(
+                                  Icons.block,
+                                  size: 14,
+                                  color: AppColors.onSurfaceVariant,
                                 ),
-                                borderRadius: BorderRadius.circular(999),
-                              ),
-                              child: Text(
-                                l10n.inGioco,
-                                style: AppTextStyles.labelMono.copyWith(
-                                  fontSize: 9,
-                                  color: AppColors.tertiaryContainer,
+                                const SizedBox(width: 6),
+                                Text(
+                                  l10n.nessunaRipetizione,
+                                  style: AppTextStyles.bodySmall.copyWith(
+                                    color: AppColors.onSurfaceVariant,
+                                  ),
                                 ),
-                              ),
+                              ],
                             ),
                           ],
                         ),
-                      ),
-                      const SizedBox(height: 8),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Icon(
-                            Icons.block,
-                            size: 14,
-                            color: AppColors.onSurfaceVariant,
-                          ),
-                          const SizedBox(width: 6),
-                          Text(
-                            l10n.nessunaRipetizione,
-                            style: AppTextStyles.caption.copyWith(
-                              color: AppColors.onSurfaceVariant,
-                            ),
-                          ),
-                        ],
                       ),
                       const SizedBox(height: 16),
                     ],
                   ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(24, 8, 24, 16),
-                child: _PassPhoneHint(controller: controller),
               ),
             ],
           ),
@@ -445,33 +439,6 @@ class _TicTacIndicatorState extends State<_TicTacIndicator> {
         color: AppColors.primaryContainer,
         fontSize: 14,
       ),
-    );
-  }
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Suggerimento statico "Passa il telefono": solo etichetta, nessuna interazione.
-// ─────────────────────────────────────────────────────────────────────────────
-
-class _PassPhoneHint extends StatelessWidget {
-  const _PassPhoneHint({required this.controller});
-
-  final GamePlayController controller;
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
-    final color = Theme.of(context).colorScheme.onSurfaceVariant;
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Icon(Icons.east, color: color, size: 18),
-        const SizedBox(width: 10),
-        Text(
-          l10n.passaIlTelefono,
-          style: AppTextStyles.labelAction.copyWith(color: color),
-        ),
-      ],
     );
   }
 }

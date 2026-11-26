@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ticboom/core/game/game_service.dart';
 import 'package:ticboom/core/routing/app_route.dart';
+import 'package:ticboom/features/setup/view/controllers/setup_controller.dart';
 
 /// Controller della schermata di fine partita (dopo l'esplosione della
 /// bomba): mostra i secondi effettivi trascorsi e ripulisce la sessione
@@ -29,6 +30,14 @@ class GameOverController extends GetxController {
   /// è stato già disposto alla navigazione verso questa schermata).
   void goHome() {
     Get.find<GameService>().clearSession();
+    if (Get.isRegistered<SetupController>()) {
+      Get.delete<SetupController>(force: true);
+    }
     Get.find<GoRouter>().go(AppRoute.home.path);
+  }
+
+  void goToSetup() {
+    Get.find<GameService>().clearSession();
+    Get.find<GoRouter>().go(AppRoute.gameConfig.path);
   }
 }

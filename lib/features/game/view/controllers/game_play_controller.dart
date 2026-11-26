@@ -7,6 +7,7 @@ import 'package:ticboom/core/game/game_service.dart';
 import 'package:ticboom/core/game/game_session.dart';
 import 'package:ticboom/core/game/sound_fx_service.dart';
 import 'package:ticboom/core/routing/app_route.dart';
+import 'package:ticboom/features/setup/view/controllers/setup_controller.dart';
 
 /// Controller della partita in corso: gestisce il timer segreto della bomba
 /// basato sulla scadenza effettiva ([GameSession.scadenza]), l'esplosione e
@@ -133,6 +134,9 @@ class GamePlayController extends GetxController with WidgetsBindingObserver {
     _bombTimer = null;
     Get.find<SoundFxService>().stopTick();
     Get.find<GameService>().clearSession();
+    if (Get.isRegistered<SetupController>()) {
+      Get.delete<SetupController>(force: true);
+    }
     Get.find<GoRouter>().go(AppRoute.home.path);
   }
 

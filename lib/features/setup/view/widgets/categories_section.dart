@@ -56,10 +56,10 @@ class CategoriesSection extends StatelessWidget {
               ),
               PillButton(
                 icon: Icons.done_all,
-                label: controller.selectedCount == controller.totalCount
+                label: controller.allBuiltInSelected
                     ? l10n.deselezionaTutte
                     : l10n.selezionaTutte,
-                onPressed: controller.selectedCount == controller.totalCount
+                onPressed: controller.allBuiltInSelected
                     ? controller.deselectAll
                     : controller.selectAll,
               ),

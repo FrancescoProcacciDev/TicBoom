@@ -10,7 +10,7 @@
   "giocaSubito": "Play now",
   "regole": "Rules",
   "setup": "Setup",
-  "multiplayerStatus": "Offline multiplayer up to 20 players • 1 single smartphone",
+  "multiplayerStatus": "Party game, play with your friends • 1 smartphone only",
   "comeSiGioca": "How to play",
   "guidaRapida": "Quick guide",
   "regoleEssenziali": "Essential rules in 3 simple moves.",
@@ -114,5 +114,6 @@
     }
   },
   "giocaNuovaPartita": "NEW MATCH",
-  "rigiochiManche": "Replay the round now"
+  "rigiochiManche": "Replay the round now",
+  "tornaAllaHome": "BACK TO HOME"
 }

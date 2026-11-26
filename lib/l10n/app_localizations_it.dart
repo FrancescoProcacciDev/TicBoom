@@ -41,7 +41,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get multiplayerStatus =>
-      'Multiplayer offline fino a 20 giocatori • 1 solo smartphone';
+      'Party Game, gioca con i tuoi amici • 1 solo smartphone';
 
   @override
   String get comeSiGioca => 'Come si gioca';
@@ -324,4 +324,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get rigiochiManche => 'Rigiochi subito la manche';
+
+  @override
+  String get tornaAllaHome => 'TORNA ALLA HOME';
 }

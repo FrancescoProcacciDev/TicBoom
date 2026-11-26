@@ -161,7 +161,7 @@ abstract class AppLocalizations {
   /// No description provided for @multiplayerStatus.
   ///
   /// In it, this message translates to:
-  /// **'Multiplayer offline fino a 20 giocatori • 1 solo smartphone'**
+  /// **'Party Game, gioca con i tuoi amici • 1 solo smartphone'**
   String get multiplayerStatus;
 
   /// No description provided for @comeSiGioca.
@@ -697,6 +697,12 @@ abstract class AppLocalizations {
   /// In it, this message translates to:
   /// **'Rigiochi subito la manche'**
   String get rigiochiManche;
+
+  /// No description provided for @tornaAllaHome.
+  ///
+  /// In it, this message translates to:
+  /// **'TORNA ALLA HOME'**
+  String get tornaAllaHome;
 }
 
 class _AppLocalizationsDelegate

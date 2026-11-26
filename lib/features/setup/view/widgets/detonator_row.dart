@@ -105,11 +105,15 @@ class _RangeChip extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
           decoration: BoxDecoration(
+            color: isSelected
+                ? AppColors.primaryContainer.withValues(alpha: 0.08)
+                : Colors.transparent,
             borderRadius: BorderRadius.circular(999),
             border: Border.all(
               color: isSelected
                   ? AppColors.primaryContainer
                   : AppColors.outlineVariant,
+              width: isSelected ? 1.5 : 1,
             ),
           ),
           child: Text(
