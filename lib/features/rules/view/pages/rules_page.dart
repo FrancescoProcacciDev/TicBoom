@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:ticboom/core/styles/app_colors.dart';
 import 'package:ticboom/core/styles/app_text_styles.dart';
+import 'package:ticboom/core/utils/app_haptics.dart';
 import 'package:ticboom/core/view/widgets/app_bottom_nav.dart';
 import 'package:ticboom/core/view/widgets/app_header.dart';
 import 'package:ticboom/features/rules/view/controllers/rules_controller.dart';
@@ -591,7 +591,7 @@ class _UnderstoodCtaState extends State<_UnderstoodCta> {
     }
     setState(() => _pressed = true);
     // Feedback tattile composito (replica navigator.vibrate([15,30,25])).
-    HapticFeedback.mediumImpact();
+    await AppHaptics.mediumImpact();
     await Future<void>.delayed(const Duration(milliseconds: 120));
     if (!mounted) {
       return;

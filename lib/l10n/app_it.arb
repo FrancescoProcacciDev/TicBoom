@@ -126,7 +126,5 @@
   "infoGioco": "Info Gioco",
   "versioneBundle": "Versione Bundle",
   "versioneBundleDesc": "Architettura Minimal detonatore",
-  "versioneBundleTag": "v1.0.0",
-  "salvaPreferenze": "Salva Preferenze",
-  "preferenzeSincronizzate": "Preferenze sincronizzate con successo."
+  "versioneBundleTag": "v1.0.0"
 }

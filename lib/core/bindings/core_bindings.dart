@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:ticboom/core/config/app_config.dart';
+import 'package:ticboom/core/game/bgm_service.dart';
 import 'package:ticboom/core/game/game_service.dart';
 import 'package:ticboom/core/game/sound_fx_service.dart';
 import 'package:ticboom/core/questions/data/repo_impl/questions_repository_impl.dart';
@@ -49,6 +50,7 @@ class CoreBindings implements Bindings {
       permanent: true,
     );
     Get.put<SoundFxService>(SoundFxService(), permanent: true);
+    Get.put<BgmService>(BgmService(), permanent: true);
     Get.put<ThemeRepository>(
       ThemeRepositorySharedPrefsImpl(preferences),
       permanent: true,

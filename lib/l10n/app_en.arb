@@ -126,7 +126,5 @@
   "infoGioco": "Game Info",
   "versioneBundle": "Bundle Version",
   "versioneBundleDesc": "Minimal detonator architecture",
-  "versioneBundleTag": "v1.0.0",
-  "salvaPreferenze": "Save Preferences",
-  "preferenzeSincronizzate": "Preferences synced successfully."
+  "versioneBundleTag": "v1.0.0"
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
+import 'package:ticboom/core/game/bgm_service.dart';
 import 'package:ticboom/core/game/game_service.dart';
 import 'package:ticboom/core/routing/app_route.dart';
 import 'package:ticboom/features/setup/view/controllers/setup_controller.dart';
@@ -14,6 +15,8 @@ class GameOverController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    // La fine partita non ha musica di sottofondo: solo la coda del boom.
+    Get.find<BgmService>().suspend();
     final session = Get.find<GameService>().session;
     if (session == null) {
       // Nessuna sessione (accesso diretto o già ripulita): torna alla home.
@@ -23,6 +26,15 @@ class GameOverController extends GetxController {
       return;
     }
     elapsedSeconds = session.secondiTrascorsi;
+  }
+
+  /// Uscita dalla fine partita (home o nuova configurazione): il controller
+  /// è smaltito dal ciclo di vita della pagina, quindi qui la musica di
+  /// sottofondo riprende.
+  @override
+  void onClose() {
+    Get.find<BgmService>().resume();
+    super.onClose();
   }
 
   /// CTA "Gioca nuova partita": elimina lo stato della partita precedente

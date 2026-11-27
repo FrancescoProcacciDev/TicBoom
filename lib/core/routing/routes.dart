@@ -14,6 +14,7 @@ import 'package:ticboom/features/profile/view/bindings/profile_bindings.dart';
 import 'package:ticboom/features/profile/view/pages/profile_page.dart';
 import 'package:ticboom/features/rules/view/bindings/rules_bindings.dart';
 import 'package:ticboom/features/rules/view/pages/rules_page.dart';
+import 'package:ticboom/features/settings/view/bindings/settings_bindings.dart';
 import 'package:ticboom/features/settings/view/pages/settings_page.dart';
 import 'package:ticboom/features/setup/view/pages/custom_category_page.dart';
 import 'package:ticboom/features/setup/view/pages/setup_page.dart';
@@ -114,6 +115,7 @@ GoRouter buildRootRouter() {
         path: AppRoute.gameSettings.path,
         name: AppRoute.gameSettings.name,
         pageBuilder: (context, state) {
+          const SettingsBindings().dependencies();
           return const MaterialPage(child: SettingsPage());
         },
       ),

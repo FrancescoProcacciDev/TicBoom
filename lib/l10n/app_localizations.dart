@@ -769,18 +769,6 @@ abstract class AppLocalizations {
   /// In it, this message translates to:
   /// **'v1.0.0'**
   String get versioneBundleTag;
-
-  /// No description provided for @salvaPreferenze.
-  ///
-  /// In it, this message translates to:
-  /// **'Salva Preferenze'**
-  String get salvaPreferenze;
-
-  /// No description provided for @preferenzeSincronizzate.
-  ///
-  /// In it, this message translates to:
-  /// **'Preferenze sincronizzate con successo.'**
-  String get preferenzeSincronizzate;
 }
 
 class _AppLocalizationsDelegate

@@ -363,11 +363,4 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get versioneBundleTag => 'v1.0.0';
-
-  @override
-  String get salvaPreferenze => 'Salva Preferenze';
-
-  @override
-  String get preferenzeSincronizzate =>
-      'Preferenze sincronizzate con successo.';
 }

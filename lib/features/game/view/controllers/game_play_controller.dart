@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
+import 'package:ticboom/core/game/bgm_service.dart';
 import 'package:ticboom/core/game/game_service.dart';
 import 'package:ticboom/core/game/game_session.dart';
 import 'package:ticboom/core/game/sound_fx_service.dart';
@@ -45,6 +46,9 @@ class GamePlayController extends GetxController with WidgetsBindingObserver {
     }
     _startBombTimer();
     _startSoundFx();
+    // La musica di sottofondo lascia spazio al tic-tac e al boom: sospesa
+    // per tutta la partita, ripresa allo smaltimento del controller.
+    Get.find<BgmService>().suspend();
   }
 
   /// Un solo timer periodico: ogni tick confronta l'ora effettiva con la
@@ -150,6 +154,10 @@ class GamePlayController extends GetxController with WidgetsBindingObserver {
     _muteWorker?.dispose();
     _muteWorker = null;
     Get.find<SoundFxService>().stopTick();
+    // Uscita dalla partita: se la schermata di fine partita non è già
+    // sospesa a sua volta (sospensioni sovrapposte contate dal servizio),
+    // la musica di sottofondo riprende.
+    Get.find<BgmService>().resume();
     super.onClose();
   }
 }
