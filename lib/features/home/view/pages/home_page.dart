@@ -62,10 +62,7 @@ class HomePage extends StatelessWidget {
             left: 0,
             right: 0,
             top: 0,
-            child: AppHeader(
-              isMuted: controller.isMuted,
-              onToggleSoundFx: controller.toggleSoundFx,
-            ),
+            child: AppHeader(),
           ),
         ],
       ),

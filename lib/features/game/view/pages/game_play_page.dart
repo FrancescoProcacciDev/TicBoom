@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ticboom/core/game/category_style.dart';
-import 'package:ticboom/core/game/sound_fx_service.dart';
 import 'package:ticboom/core/styles/app_colors.dart';
 import 'package:ticboom/core/styles/app_text_styles.dart';
 import 'package:ticboom/core/view/widgets/bomb_vector.dart';
@@ -295,19 +294,6 @@ class _Header extends StatelessWidget {
               ),
             ),
           ),
-          // Toggle mute di partita: condivisa con la home la chiave
-          // persistita (SoundFxService); il ticchettio si ferma/riparte
-          // subito grazie all'osservatore del controller.
-          Obx(() {
-            final soundFx = Get.find<SoundFxService>();
-            return IconButton(
-              onPressed: soundFx.toggleSoundFx,
-              icon: Icon(
-                soundFx.isMuted.value ? Icons.volume_off : Icons.volume_up,
-              ),
-              color: AppColors.onSurfaceVariant,
-            );
-          }),
         ],
       ),
     );

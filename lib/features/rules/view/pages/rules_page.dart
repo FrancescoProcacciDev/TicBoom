@@ -5,7 +5,6 @@ import 'package:ticboom/core/styles/app_colors.dart';
 import 'package:ticboom/core/styles/app_text_styles.dart';
 import 'package:ticboom/core/view/widgets/app_bottom_nav.dart';
 import 'package:ticboom/core/view/widgets/app_header.dart';
-import 'package:ticboom/features/home/view/controllers/home_controller.dart';
 import 'package:ticboom/features/rules/view/controllers/rules_controller.dart';
 import 'package:ticboom/l10n/app_localizations.dart';
 
@@ -20,7 +19,6 @@ class RulesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<RulesController>();
-    final audioController = Get.find<HomeController>();
     final l10n = AppLocalizations.of(context);
     // Schivata dell'header overlay: SafeArea del dispositivo + margine + altezza
     // barra (64). Corregge anche il problema del padding fisso noto dalla home.
@@ -142,10 +140,7 @@ class RulesPage extends StatelessWidget {
             left: 0,
             right: 0,
             top: 0,
-            child: AppHeader(
-              isMuted: audioController.isMuted,
-              onToggleSoundFx: audioController.toggleSoundFx,
-            ),
+            child: AppHeader(),
           ),
         ],
       ),
@@ -245,11 +240,6 @@ class _FeaturePills extends StatelessWidget {
           icon: Icons.timer_outlined,
           iconColor: AppColors.primaryContainer,
           label: l10n.timerSegreto,
-        ),
-        _FeaturePill(
-          icon: Icons.groups,
-          iconColor: AppColors.secondary,
-          label: l10n.giocatoriRange,
         ),
       ],
     );

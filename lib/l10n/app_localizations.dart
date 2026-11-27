@@ -194,12 +194,6 @@ abstract class AppLocalizations {
   /// **'Timer segreto'**
   String get timerSegreto;
 
-  /// No description provided for @giocatoriRange.
-  ///
-  /// In it, this message translates to:
-  /// **'2-20 giocatori'**
-  String get giocatoriRange;
-
   /// No description provided for @sceglieIlMazzo.
   ///
   /// In it, this message translates to:
@@ -233,7 +227,7 @@ abstract class AppLocalizations {
   /// No description provided for @detonazioneTesto.
   ///
   /// In it, this message translates to:
-  /// **'Il timer è segreto e imprevedibile (tra 15 e 60 secondi). Chi ha in mano il telefono al'**
+  /// **'Il timer è segreto e imprevedibile. Chi ha in mano il telefono al'**
   String get detonazioneTesto;
 
   /// No description provided for @detonazioneTestoFinale.

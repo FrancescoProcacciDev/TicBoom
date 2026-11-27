@@ -1,29 +1,18 @@
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:ticboom/core/styles/app_colors.dart';
 import 'package:ticboom/core/styles/app_text_styles.dart';
 import 'package:ticboom/l10n/app_localizations.dart';
 
 /// Header fisso condiviso delle schermate principali (home, regole):
-/// brand TICBOOM + badge EDITION + toggle audio.
+/// brand TICBOOM + badge EDITION.
 ///
 /// Overlay traslucido: surface @ 80% con blur (backdrop-blur-xl del
-/// riferimento), SafeArea top e barra alta 64. Lo stato audio resta di
-/// competenza della feature: il widget riceve l'Rx e il callback.
+/// riferimento), SafeArea top e barra alta 64. Il toggle audio non è più
+/// qui: spostato nella futura pagina Settings.
 class AppHeader extends StatelessWidget {
-  const AppHeader({
-    super.key,
-    required this.isMuted,
-    required this.onToggleSoundFx,
-  });
-
-  /// Stato audio persistito della feature ( HomeController.isMuted ).
-  final RxBool isMuted;
-
-  /// Toggle audio della feature ( HomeController.toggleSoundFx ).
-  final VoidCallback onToggleSoundFx;
+  const AppHeader({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -78,39 +67,10 @@ class AppHeader extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const Spacer(),
-                    _SoundButton(isMuted: isMuted, onTap: onToggleSoundFx),
                   ],
                 ),
               ),
             ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _SoundButton extends StatelessWidget {
-  const _SoundButton({required this.isMuted, required this.onTap});
-
-  final RxBool isMuted;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return Obx(
-      () => GestureDetector(
-        onTap: onTap,
-        child: Container(
-          width: 44,
-          height: 44,
-          alignment: Alignment.center,
-          decoration: BoxDecoration(borderRadius: BorderRadius.circular(8)),
-          child: Icon(
-            isMuted.value ? Icons.volume_off : Icons.volume_up,
-            size: 20,
-            color: AppColors.onSurfaceVariant,
           ),
         ),
       ),

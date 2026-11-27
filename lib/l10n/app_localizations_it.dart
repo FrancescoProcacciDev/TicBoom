@@ -59,9 +59,6 @@ class AppLocalizationsIt extends AppLocalizations {
   String get timerSegreto => 'Timer segreto';
 
   @override
-  String get giocatoriRange => '2-20 giocatori';
-
-  @override
   String get sceglieIlMazzo => 'Scegli il mazzo';
 
   @override
@@ -80,7 +77,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get detonazioneTesto =>
-      'Il timer è segreto e imprevedibile (tra 15 e 60 secondi). Chi ha in mano il telefono al';
+      'Il timer è segreto e imprevedibile. Chi ha in mano il telefono al';
 
   @override
   String get detonazioneTestoFinale => 'perde la manche.';
