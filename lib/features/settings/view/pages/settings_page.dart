@@ -149,14 +149,7 @@ class _AudioFeedbackSection extends StatelessWidget {
                 ),
               ),
               const _RowDivider(),
-              Obx(
-                () => _SettingRow(
-                  title: l10n.musicaSottofondo,
-                  subtitle: l10n.musicaSottofondoDesc,
-                  value: !controller.musicMuted.value,
-                  onChanged: (_) => controller.toggleMusic(),
-                ),
-              ),
+              _MusicVolumeRow(controller: controller),
               const _RowDivider(),
               Obx(
                 () => _SettingRow(
@@ -229,6 +222,113 @@ class _SettingRow extends StatelessWidget {
         ),
         const SizedBox(width: 16),
         _SettingsSwitch(value: value, onChanged: onChanged),
+      ],
+    );
+  }
+}
+
+/// Riga volume musica: titolo + descrizione in alto, slider custom sotto a
+/// tutta larghezza con etichetta del valore (0 = musica disattivata).
+class _MusicVolumeRow extends StatelessWidget {
+  const _MusicVolumeRow({required this.controller});
+
+  final SettingsController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+
+    return Obx(
+      () => Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(
+            l10n.musicaSottofondo,
+            style: AppTextStyles.body.copyWith(
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+              color: AppColors.onSurface,
+            ),
+          ),
+          const SizedBox(height: 2),
+          Text(
+            l10n.musicaSottofondoDesc,
+            style: AppTextStyles.caption.copyWith(
+              color: AppColors.onSurfaceVariant,
+            ),
+          ),
+          const SizedBox(height: 10),
+          _SettingsSlider(
+            value: controller.musicVolume.value,
+            onChanged: controller.setMusicVolume,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Slider custom del volume (0-100), riutilizzabile per altre impostazioni.
+/// Traccia surfaceContainerHigh, riempimento e thumb primaryContainer/on-
+/// PrimaryContainer quando attivo; a 0 i colori passano a "spento"
+/// (onSurfaceVariant) per rendere evidente lo stato disattivato.
+class _SettingsSlider extends StatelessWidget {
+  const _SettingsSlider({required this.value, required this.onChanged});
+
+  final int value;
+  final ValueChanged<int> onChanged;
+
+  static const int _step = 5;
+
+  @override
+  Widget build(BuildContext context) {
+    final active = value > 0;
+
+    return Row(
+      children: [
+        Expanded(
+          child: SliderTheme(
+            data: SliderThemeData(
+              trackHeight: 6,
+              activeTrackColor: active
+                  ? AppColors.primaryContainer
+                  : AppColors.onSurfaceVariant,
+              inactiveTrackColor: AppColors.surfaceContainerHigh,
+              thumbColor: active
+                  ? AppColors.onPrimaryContainer
+                  : AppColors.onSurfaceVariant,
+              overlayColor: AppColors.primaryContainer.withValues(
+                alpha: 0.2,
+              ),
+              thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 10),
+              overlayShape: const RoundSliderOverlayShape(
+                overlayRadius: 16,
+              ),
+            ),
+            child: Slider(
+              value: value.toDouble(),
+              min: 0,
+              max: 100,
+              divisions: 100 ~/ _step,
+              onChanged: (newValue) =>
+                  onChanged((newValue / _step).round() * _step),
+            ),
+          ),
+        ),
+        const SizedBox(width: 12),
+        SizedBox(
+          width: 42,
+          child: Text(
+            '$value%',
+            textAlign: TextAlign.right,
+            style: AppTextStyles.labelMono.copyWith(
+              fontSize: 11,
+              color: active
+                  ? AppColors.primaryContainer
+                  : AppColors.onSurfaceVariant,
+            ),
+          ),
+        ),
       ],
     );
   }

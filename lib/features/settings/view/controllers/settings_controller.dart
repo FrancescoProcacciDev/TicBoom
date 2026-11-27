@@ -4,11 +4,11 @@ import 'package:ticboom/core/game/bgm_service.dart';
 import 'package:ticboom/core/game/sound_fx_service.dart';
 import 'package:ticboom/core/utils/app_key_store.dart';
 
-/// Controller della schermata impostazioni: tre switch (effetti sonori,
-/// musica di sottofondo, vibrazione aptica) che persistono subito il loro
-/// stato. Gli effetti sonori sono delegati a SoundFxService e la musica a
-/// BgmService (fonti di verità condivise col gioco); l'aptica usa una
-/// chiave dedicata.
+/// Controller della schermata impostazioni: switch effetti sonori e
+/// vibrazione aptica più slider del volume musica, tutti con persistenza
+/// immediata al tap. Gli effetti sonori sono delegati a SoundFxService e la
+/// musica a BgmService (fonti di verità condivise col gioco); l'aptica usa
+/// una chiave dedicata.
 class SettingsController extends GetxController {
   SettingsController() {
     final preferences = Get.find<SharedPreferences>();
@@ -19,16 +19,19 @@ class SettingsController extends GetxController {
   /// Stato mute degli effetti sonori (ON nello switch = !muto).
   RxBool get soundMuted => Get.find<SoundFxService>().isMuted;
 
-  /// Stato mute della musica di sottofondo (ON nello switch = !muto).
-  RxBool get musicMuted => Get.find<BgmService>().isMuted;
+  /// Volume della musica di sottofondo (0-100, 0 = disattivata).
+  RxInt get musicVolume => Get.find<BgmService>().volume;
 
+  /// Stato dello switch vibrazione aptica (persistito su hapticsEnabled).
   final hapticsOn = true.obs;
 
   /// Toggle effetti sonori: delega al mute del servizio.
   Future<void> toggleSound() => Get.find<SoundFxService>().toggleSoundFx();
 
-  /// Toggle musica di sottofondo: delega al mute del servizio BGM.
-  Future<void> toggleMusic() => Get.find<BgmService>().toggleSound();
+  /// Imposta il volume della musica: delega al servizio BGM (persistito e
+  /// applicato live al player).
+  Future<void> setMusicVolume(int value) =>
+      Get.find<BgmService>().setMusicVolume(value);
 
   /// Toggle vibrazione aptica: persistito; le chiamate passano da
   /// [AppHaptics], che legge la chiave a ogni colpo.
