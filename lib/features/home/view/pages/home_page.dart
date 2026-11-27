@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:ticboom/core/styles/app_colors.dart';
 import 'package:ticboom/core/styles/app_text_styles.dart';
+import 'package:ticboom/core/utils/app_haptics.dart';
 import 'package:ticboom/core/view/widgets/app_bottom_nav.dart';
 import 'package:ticboom/core/view/widgets/app_header.dart';
 import 'package:ticboom/core/view/widgets/bomb_vector.dart';
@@ -259,26 +259,13 @@ class _ActionZone extends StatelessWidget {
       children: [
         _PlayCta(controller: controller, label: l10n.giocaSubito),
         const SizedBox(height: 12),
-        Row(
-          children: [
-            Expanded(
-              child: _SecondaryCard(
-                icon: Icons.menu_book,
-                iconColor: AppColors.primary,
-                label: l10n.regole,
-                onTap: controller.goRules,
-              ),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: _SecondaryCard(
-                icon: Icons.tune,
-                iconColor: AppColors.primary,
-                label: l10n.setup,
-                onTap: controller.goSettings,
-              ),
-            ),
-          ],
+        // Card secondaria unica: la voce CONFIG della barra copre già le
+        // impostazioni, quindi qui resta solo l'accesso alle regole.
+        _SecondaryCard(
+          icon: Icons.menu_book,
+          iconColor: AppColors.primary,
+          label: l10n.regole,
+          onTap: controller.goRules,
         ),
         const SizedBox(height: 12),
         _StatusCard(label: l10n.multiplayerStatus),
@@ -306,7 +293,7 @@ class _PlayCtaState extends State<_PlayCta> {
     }
     setState(() => _pressed = true);
     // Feedback tattile composito (replica navigator.vibrate([15,30,25])).
-    HapticFeedback.mediumImpact();
+    await AppHaptics.mediumImpact();
     await Future<void>.delayed(const Duration(milliseconds: 120));
     if (!mounted) {
       return;

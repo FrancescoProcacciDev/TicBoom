@@ -152,12 +152,6 @@ abstract class AppLocalizations {
   /// **'Regole'**
   String get regole;
 
-  /// No description provided for @setup.
-  ///
-  /// In it, this message translates to:
-  /// **'Setup'**
-  String get setup;
-
   /// No description provided for @multiplayerStatus.
   ///
   /// In it, this message translates to:
@@ -697,6 +691,96 @@ abstract class AppLocalizations {
   /// In it, this message translates to:
   /// **'TORNA ALLA HOME'**
   String get tornaAllaHome;
+
+  /// No description provided for @impostazioni.
+  ///
+  /// In it, this message translates to:
+  /// **'Impostazioni'**
+  String get impostazioni;
+
+  /// No description provided for @impostazioniSottotitolo.
+  ///
+  /// In it, this message translates to:
+  /// **'Personalizza l\'esperienza di gioco.'**
+  String get impostazioniSottotitolo;
+
+  /// No description provided for @audioFeedback.
+  ///
+  /// In it, this message translates to:
+  /// **'Audio'**
+  String get audioFeedback;
+
+  /// No description provided for @effettiSonori.
+  ///
+  /// In it, this message translates to:
+  /// **'Effetti Sonori'**
+  String get effettiSonori;
+
+  /// No description provided for @effettiSonoriDesc.
+  ///
+  /// In it, this message translates to:
+  /// **'Suono ticchettio ed esplosione ad alta dinamica'**
+  String get effettiSonoriDesc;
+
+  /// No description provided for @musicaSottofondo.
+  ///
+  /// In it, this message translates to:
+  /// **'Musica di Sottofondo'**
+  String get musicaSottofondo;
+
+  /// No description provided for @musicaSottofondoDesc.
+  ///
+  /// In it, this message translates to:
+  /// **'Beat lounge di tensione con progressione bpm'**
+  String get musicaSottofondoDesc;
+
+  /// No description provided for @vibrazioneAptica.
+  ///
+  /// In it, this message translates to:
+  /// **'Vibrazione Aptica'**
+  String get vibrazioneAptica;
+
+  /// No description provided for @vibrazioneApticaDesc.
+  ///
+  /// In it, this message translates to:
+  /// **'Colpi tattili ad ogni secondo e scarica al detonare'**
+  String get vibrazioneApticaDesc;
+
+  /// No description provided for @infoGioco.
+  ///
+  /// In it, this message translates to:
+  /// **'Info Gioco'**
+  String get infoGioco;
+
+  /// No description provided for @versioneBundle.
+  ///
+  /// In it, this message translates to:
+  /// **'Versione Bundle'**
+  String get versioneBundle;
+
+  /// No description provided for @versioneBundleDesc.
+  ///
+  /// In it, this message translates to:
+  /// **'Architettura Minimal detonatore'**
+  String get versioneBundleDesc;
+
+  /// No description provided for @versioneBundleTag.
+  ///
+  /// In it, this message translates to:
+  /// **'v1.0.0'**
+  String get versioneBundleTag;
+
+  /// No description provided for @salvaPreferenze.
+  ///
+  /// In it, this message translates to:
+  /// **'Salva Preferenze'**
+  String get salvaPreferenze;
+
+  /// No description provided for @preferenzeSincronizzate.
+  ///
+  /// In it, this message translates to:
+  /// **'Preferenze sincronizzate con successo.'**
+  String get preferenzeSincronizzate;
 }
 
 class _AppLocalizationsDelegate

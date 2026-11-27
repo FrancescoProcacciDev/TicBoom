@@ -37,9 +37,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get regole => 'Rules';
 
   @override
-  String get setup => 'Setup';
-
-  @override
   String get multiplayerStatus =>
       'Party game, play with your friends • 1 smartphone only';
 
@@ -323,4 +320,50 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get tornaAllaHome => 'BACK TO HOME';
+
+  @override
+  String get impostazioni => 'Settings';
+
+  @override
+  String get impostazioniSottotitolo => 'Customize your gaming experience.';
+
+  @override
+  String get audioFeedback => 'Audio';
+
+  @override
+  String get effettiSonori => 'Sound Effects';
+
+  @override
+  String get effettiSonoriDesc => 'Ticking and high-dynamic explosion sound';
+
+  @override
+  String get musicaSottofondo => 'Background Music';
+
+  @override
+  String get musicaSottofondoDesc => 'Tense lounge beat with bpm progression';
+
+  @override
+  String get vibrazioneAptica => 'Haptic Vibration';
+
+  @override
+  String get vibrazioneApticaDesc =>
+      'Tactile taps every second and discharge on detonation';
+
+  @override
+  String get infoGioco => 'Game Info';
+
+  @override
+  String get versioneBundle => 'Bundle Version';
+
+  @override
+  String get versioneBundleDesc => 'Minimal detonator architecture';
+
+  @override
+  String get versioneBundleTag => 'v1.0.0';
+
+  @override
+  String get salvaPreferenze => 'Save Preferences';
+
+  @override
+  String get preferenzeSincronizzate => 'Preferences synced successfully.';
 }
