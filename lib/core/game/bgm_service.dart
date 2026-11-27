@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:audioplayers/audioplayers.dart';
-import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ticboom/core/utils/app_key_store.dart';
@@ -17,7 +17,12 @@ import 'package:ticboom/core/utils/app_key_store.dart';
 /// quindi pausa/ripartenza e variazioni di volume sono istantanee. La
 /// ripresa avviene con [AudioPlayer.resume], che prosegue dalla posizione
 /// di pausa invece di ripartire dall'inizio della traccia.
-class BgmService extends GetxService {
+///
+/// In background la musica si ferma: l'osservatore del ciclo di vita mette
+/// in pausa alla sospensione dell'app e riprende al ritorno in primo piano
+/// (utile anche dopo che un'altra app, es. un video, ha preso l'audio
+/// focus e il sistema ha messo in pausa il player).
+class BgmService extends GetxService with WidgetsBindingObserver {
   static const String _asset = 'sounds/tic_boom_soundtrack_2.mp3';
 
   /// Volume di default quando non c'è alcun valore salvato.
@@ -41,6 +46,7 @@ class BgmService extends GetxService {
   @override
   void onInit() {
     super.onInit();
+    WidgetsBinding.instance.addObserver(this);
     final preferences = Get.find<SharedPreferences>();
     // Migrazione dallo switch "Musica di Sottofondo": chi aveva la musica
     // muta parte da volume 0 (disattivata).
@@ -50,6 +56,26 @@ class BgmService extends GetxService {
         : preferences.getInt(AppKeyStore.musicVolume) ?? _defaultVolume;
     // Musica attiva dal bootstrap, se il volume lo consente.
     unawaited(_syncPlayback());
+  }
+
+  /// Ciclo di vita dell'app: in background la musica si mette in pausa, al
+  /// rientro in primo piano riprende (se volume > 0 e non sospesa). Lo
+  /// stesso percorso copre anche la ripresa dopo la perdita dell'audio
+  /// focus da parte di un'altra app (es. un video avviato su YouTube).
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    switch (state) {
+      case AppLifecycleState.paused:
+      case AppLifecycleState.detached:
+        unawaited(_player?.pause());
+      case AppLifecycleState.resumed:
+        unawaited(_syncPlayback());
+      case AppLifecycleState.hidden:
+      case AppLifecycleState.inactive:
+        // Stati transitori (app switcher, ombrelli di sistema): nessuna
+        // azione, la decisione spetta a paused/resumed.
+        break;
+    }
   }
 
   /// Imposta il volume (0-100): persistito e applicato LIVE al player, così
@@ -141,6 +167,7 @@ class BgmService extends GetxService {
 
   @override
   void onClose() {
+    WidgetsBinding.instance.removeObserver(this);
     final player = _player;
     _player = null;
     if (player != null) {
