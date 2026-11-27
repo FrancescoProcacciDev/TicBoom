@@ -23,7 +23,7 @@ import 'package:ticboom/core/utils/app_key_store.dart';
 /// (utile anche dopo che un'altra app, es. un video, ha preso l'audio
 /// focus e il sistema ha messo in pausa il player).
 class BgmService extends GetxService with WidgetsBindingObserver {
-  static const String _asset = 'sounds/tic_boom_soundtrack_2.mp3';
+  static const String _asset = 'sounds/tic_boom_soundtrack_5.mp3';
 
   /// Volume di default quando non c'è alcun valore salvato.
   static const int _defaultVolume = 50;
